@@ -28,19 +28,17 @@ class AuthRepository implements IAuthRepository {
   }
 
   @override
-  Future<User> getGoogleLogin() async {
+  getGoogleLogin() async {
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth =
-        await googleUser!.authentication;
+    await googleUser!.authentication;
 
     final AuthCredential credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
 
-    final User user =
-         auth.signInWithCredential(credential).then((value) =>  value) as User;
-
+    final User? user = (await auth.signInWithCredential(credential)).user;
     return user;
   }
 

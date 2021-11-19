@@ -37,7 +37,7 @@ abstract class HomeStoreBase with Store {
 
   logoff() async {
     await Modular.get<AuthController>().logout();
-    Modular.to.pushReplacementNamed('/login');
+    Modular.to.navigate('/');
   }
 
 }

@@ -1,6 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/shared/auth/auth_controller.dart';
-import 'package:flutter_padrao/app/shared/auth/repositories/auth_repository.dart';
 import 'package:mobx/mobx.dart';
 
 part 'login_store.g.dart';
@@ -16,11 +15,13 @@ abstract class _LoginBase with Store {
   _LoginBase({required this.auth});
 
   @action
-  Future loginWithGoogle() async {
+   loginWithGoogle() async {
+    print('ok');
     try {
       loading = true;
+
       await auth.loginWithGoogle();
-      Modular.to.pushReplacementNamed('/home');
+      Modular.to.navigate('/home');
     } catch (e) {
       loading = false;
     }
