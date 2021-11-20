@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:flutter_padrao/app/modules/login/login_module.dart';
+import 'package:flutter_padrao/app/modules/auth/auth_module.dart';
 import 'package:flutter_padrao/app/shared/auth/auth_controller.dart';
 import 'package:flutter_padrao/app/shared/auth/repositories/auth_repository.dart';
 import 'package:flutter_padrao/app/shared/auth/repositories/auth_repository_interface.dart';
@@ -21,7 +21,7 @@ class AppModule extends Module {
 
   @override
   final List<ModularRoute> routes = [
-    ModuleRoute('/', module: LoginModule()),
+    ModuleRoute('/auth', module: AuthModule()),
     ModuleRoute('/home', module: HomeModule()),
     WildcardRoute(
       child: (_, __) => const Scaffold(

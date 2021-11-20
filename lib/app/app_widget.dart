@@ -8,7 +8,7 @@ class AppWidget extends StatelessWidget {
       title: 'Flutter Slidy',
       theme: ThemeData(primarySwatch: Colors.blue),
       debugShowCheckedModeBanner: false,
-      initialRoute: "/",
+      initialRoute: "/auth",
     ).modular();
   }
 }
