@@ -22,11 +22,11 @@ class AuthModule extends Module {
 
   @override
   final List<ModularRoute> routes = [
-    ChildRoute('', child:  (context, args) => const LoginPage(), transition: TransitionType.scale),
+    ChildRoute('', child:  (context, args) => const LoginPage(), transition: TransitionType.leftToRightWithFade),
     ChildRoute('signup', child:  (context, args) => const SignupPage(), transition: TransitionType.leftToRightWithFade),
-    ChildRoute('verify', child:  (context, args) => const VerifyPage(), transition: TransitionType.defaultTransition),
-    ChildRoute('forget', child:  (context, args) => const ForgetPage(), transition: TransitionType.leftToRight),
-    ChildRoute('change', child:  (context, args) => const ChangePage(), transition: TransitionType.defaultTransition),
+    ChildRoute('verify', child:  (context, args) => const VerifyPage(), transition: TransitionType.leftToRightWithFade),
+    ChildRoute('forget', child:  (context, args) => const ForgetPage(), transition: TransitionType.leftToRightWithFade),
+    ChildRoute('change', child:  (context, args) => const ChangePage(), transition: TransitionType.leftToRightWithFade),
 
   ];
 

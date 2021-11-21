@@ -35,9 +35,4 @@ abstract class HomeStoreBase with Store {
     versionService.delete(model);
   }
 
-  logoff() async {
-    await Modular.get<AuthController>().logout();
-    Modular.to.navigate('/');
-  }
-
 }

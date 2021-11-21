@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/modules/home/home_store.dart';
 import 'package:flutter_padrao/app/modules/home/models/version_model.dart';
+import 'package:flutter_padrao/app/shared/components/app_bar_widget.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
@@ -14,14 +15,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends ModularState<HomePage, HomeStore> {
+
+  final HomeStore store = Modular.get();
+
   @override
   Widget build(BuildContext context) {
+    var altura = MediaQuery.of(context).size.height * 0.3;
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-            icon: Icon(Icons.highlight_off), onPressed: controller.logoff),
-        title: Text(widget.title),
-      ),
+      appBar: AppBarWidget(title: widget.title, context: context, size: altura,),
       body: Observer(builder: (_) {
         if (controller.versionList!.data == null) {
           return const Center(

@@ -12,7 +12,6 @@ class ThemeModel extends ChangeNotifier {
     _preferences = ThemePreferences();
     getPreferences();
   }
-//Switching themes in the flutter apps - Flutterant
   set isDark(bool value) {
     _isDark = value;
     _preferences.setTheme(value);
