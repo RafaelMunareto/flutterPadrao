@@ -35,15 +35,17 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
           ),
         ),
         actions: [
-          if (back)
-            IconButton(
-                onPressed: () {
-                  Modular.to.navigate('/settings');
-                },
-                icon: const Icon(Icons.more_vert))
+          settings
+              ? IconButton(
+                  onPressed: () {
+                    Modular.to.navigate('/settings');
+                  },
+                  icon: const Icon(Icons.more_vert),
+                )
+              : Container()
         ],
         title: Text(title),
-        leading: !settings
+        leading: back
             ? IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () => Modular.to.navigate(rota))

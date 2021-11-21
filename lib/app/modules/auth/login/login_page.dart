@@ -3,7 +3,6 @@ import 'package:flutter_padrao/app/modules/auth/login/login_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_padrao/app/shared/components/app_bar_widget.dart';
 
-
 class LoginPage extends StatefulWidget {
   final String title;
 
@@ -20,7 +19,8 @@ class LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     var altura = MediaQuery.of(context).size.height * 0.2;
     return Scaffold(
-      appBar: AppBarWidget(title: widget.title, size: altura, context: context, back: false,),
+      appBar: AppBarWidget(
+          title: widget.title, size: altura, context: context, back: false),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
