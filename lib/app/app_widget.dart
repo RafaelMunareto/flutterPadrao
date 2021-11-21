@@ -3,9 +3,11 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/shared/repositories/localstorage/local_storage_interface.dart';
 import 'package:flutter_padrao/app/shared/repositories/localstorage/local_storage_share.dart';
 import 'package:flutter_padrao/app/shared/utils/themes/theme.dart';
-import 'package:flutter_padrao/app/shared/utils/themes/theme_preferences.dart';
 
 class AppWidget extends StatefulWidget {
+  @override
+  const AppWidget({Key? key}) : super(key: key);
+
   @override
   State<AppWidget> createState() => _AppWidgetState();
   static _AppWidgetState? of(BuildContext context) =>
@@ -16,20 +18,18 @@ class _AppWidgetState extends State<AppWidget> {
 
   ThemeMode _themeMode = ThemeMode.system;
   final ILocalStorage theme = LocalStorageShare();
-  late String darkLight;
+  late String darkLight = '';
 
 
   @override
   Widget build(BuildContext context) {
 
-    this.theme.get('theme').then((value) {
+    theme.get('theme').then((value) {
       if(value != null){
         darkLight = value[0];
       }
     }).then((value) {
-      if(darkLight != null){
-        darkLight == 'light' ? _themeMode = ThemeMode.light :  _themeMode = ThemeMode.dark;
-      }
+      darkLight == 'light' ? _themeMode = ThemeMode.light :  _themeMode = ThemeMode.dark;
     });
 
     return MaterialApp(

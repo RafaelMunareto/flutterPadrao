@@ -1,7 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/modules/home/models/version_model.dart';
 import 'package:flutter_padrao/app/modules/home/services/interfaces/version_service_interface.dart';
-import 'package:flutter_padrao/app/shared/auth/auth_controller.dart';
 import 'package:flutter_padrao/app/shared/repositories/localstorage/local_storage_interface.dart';
 import 'package:mobx/mobx.dart';
 

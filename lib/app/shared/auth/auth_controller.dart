@@ -15,7 +15,7 @@ abstract class _AuthControllerBase with Store {
   User? user;
 
   _AuthControllerBase({required this.authRepository}){
-   this.setUser(authRepository.getUser());
+   setUser(authRepository.getUser());
   }
 
   @action

@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'local_storage_interface.dart';
 
 class LocalStorageHive implements ILocalStorage {
-  Completer<Box> _instance = Completer<Box>();
+  final Completer<Box> _instance = Completer<Box>();
 
   _init() async {
     if (!kIsWeb) {

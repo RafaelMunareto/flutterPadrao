@@ -1,6 +1,7 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/modules/auth/verify/verify_store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_padrao/app/shared/components/app_bar_widget.dart';
 
 class VerifyPage extends StatefulWidget {
   final String title;
@@ -13,12 +14,11 @@ class VerifyPageState extends State<VerifyPage> {
 
   @override
   Widget build(BuildContext context) {
+    var altura = MediaQuery.of(context).size.height * 0.2;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+      appBar: AppBarWidget(title: widget.title, size: altura, context: context),
       body: Column(
-        children: <Widget>[],
+        children: const <Widget>[],
       ),
     );
   }

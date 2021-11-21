@@ -6,22 +6,49 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
   final double size;
   final context;
   final controller;
+  final bool settings;
+  final bool back;
+  final String rota;
 
-  AppBarWidget({Key? key, this.title = "AppBarWidget", this.size=200, this.context, this.controller}) : super(key: key);
+  AppBarWidget(
+      {Key? key,
+      this.title = "AppBarWidget",
+      this.size = 200,
+      this.context,
+      this.controller,
+      this.settings = false,
+      this.back = true,
+      this.rota = '/auth'})
+      : super(key: key);
 
   @override
   Size get preferredSize => Size.fromHeight(size);
 
   @override
   Widget build(BuildContext context) {
-
-    return AppBar(
-      title: Text(title),
-      actions: [
-        IconButton(onPressed:() { Modular.to.navigate('/settings'); }, icon: const Icon(Icons.more_vert))
-      ],
+    return PreferredSize(
+      preferredSize: Size.fromHeight(size),
+      child: AppBar(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.elliptical(150, 50),
+          ),
+        ),
+        actions: [
+          if (back)
+            IconButton(
+                onPressed: () {
+                  Modular.to.navigate('/settings');
+                },
+                icon: const Icon(Icons.more_vert))
+        ],
+        title: Text(title),
+        leading: !settings
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => Modular.to.navigate(rota))
+            : Container(),
+      ),
     );
   }
-
-
 }

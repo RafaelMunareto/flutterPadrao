@@ -1,6 +1,7 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/modules/auth/forget/forget_store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_padrao/app/shared/components/app_bar_widget.dart';
 
 class ForgetPage extends StatefulWidget {
   final String title;
@@ -13,10 +14,9 @@ class ForgetPageState extends State<ForgetPage> {
 
   @override
   Widget build(BuildContext context) {
+    var altura = MediaQuery.of(context).size.height * 0.2;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+      appBar: AppBarWidget(title: widget.title, size: altura, context: context),
       body: Column(
         children: const [
 

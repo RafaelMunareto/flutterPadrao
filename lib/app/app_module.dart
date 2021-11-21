@@ -6,7 +6,6 @@ import 'package:flutter_padrao/app/modules/settings/settings_module.dart';
 import 'package:flutter_padrao/app/shared/auth/auth_controller.dart';
 import 'package:flutter_padrao/app/shared/auth/repositories/auth_repository.dart';
 import 'package:flutter_padrao/app/shared/auth/repositories/auth_repository_interface.dart';
-import 'package:flutter_padrao/app/shared/repositories/localstorage/local_storage_hive.dart';
 import 'package:flutter_padrao/app/shared/repositories/localstorage/local_storage_interface.dart';
 import 'package:flutter_padrao/app/shared/repositories/localstorage/local_storage_share.dart';
 import 'package:flutter_padrao/app/shared/utils/themes/theme_preferences.dart';

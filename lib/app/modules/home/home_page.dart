@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -16,13 +15,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends ModularState<HomePage, HomeStore> {
 
+  @override
   final HomeStore store = Modular.get();
 
   @override
   Widget build(BuildContext context) {
-    var altura = MediaQuery.of(context).size.height * 0.3;
+    var altura = MediaQuery.of(context).size.height * 0.2;
     return Scaffold(
-      appBar: AppBarWidget(title: widget.title, context: context, size: altura,),
+      appBar: AppBarWidget(title: widget.title, context: context, size: altura, settings: true,),
       body: Observer(builder: (_) {
         if (controller.versionList!.data == null) {
           return const Center(
@@ -32,7 +32,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
           return Center(
             child: ElevatedButton(
               onPressed: controller.getList,
-              child: Text('Error'),
+              child: const Text('Error'),
             ),
           );
         } else {
@@ -68,7 +68,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
       }),
       floatingActionButton: FloatingActionButton(
         onPressed: _showDialog,
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -93,14 +93,14 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                 onPressed: () {
                   Modular.to.pop();
                 },
-                child: Text('Cancelar'),
+                child: const Text('Cancelar'),
               ),
               ElevatedButton(
                 onPressed: () {
                   controller.save(model!);
                   Modular.to.pop();
                 },
-                child: Text('Adicionar'),
+                child: const Text('Adicionar'),
               ),
             ],
           );

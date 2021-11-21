@@ -6,7 +6,7 @@ part 'login_store.g.dart';
 
 class LoginStore = _LoginStoreBase with _$LoginStore;
 abstract class _LoginStoreBase with Store {
-  AuthController auth;
+  AuthController auth = Modular.get();
 
   @observable
   bool loading = false;

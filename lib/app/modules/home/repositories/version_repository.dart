@@ -9,7 +9,6 @@ class VersionRepository implements IVersionRepository{
 
   VersionRepository({required this.firestore});
 
-  @override
   void dispose() {}
 
   @override
