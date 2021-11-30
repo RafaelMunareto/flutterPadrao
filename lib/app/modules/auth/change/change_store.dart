@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/modules/auth/shared/models/client_store.dart';
 import 'package:flutter_padrao/app/shared/auth/auth_controller.dart';
@@ -15,16 +17,27 @@ abstract class _ChangeStoreBase with Store {
   bool loading = false;
 
   @observable
-  String msgErro = '';
+  String msgFirebase = '';
+
+  @observable
+  bool checkError = false;
 
   @action
   submit()
   {
+    var uri = Uri.dataFromString(window.location.href);
+    Map<String, String> params =
+        uri.queryParameters; // query parameters automatically populated
+    var code = params['oobCode'];
     loading = true;
-    auth.changeResetPassword(client.password).then((value) {
+    auth.changeResetPassword(client.password, code).then((value) {
       loading = false;
+      msgFirebase = 'Senha alterada com sucesso!';
       Modular.to.navigate('/auth');
-    }).catchError((e) => msgErro = ErrorPtBr().verificaCodeErro('auth/' + e.code));
+    }).catchError((e) {
+      checkError = true;
+      msgFirebase = ErrorPtBr().verificaCodeErro('auth/' + e.code);
+    });
   }
 
 }

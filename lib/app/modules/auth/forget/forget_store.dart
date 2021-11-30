@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/modules/auth/shared/models/client_store.dart';
 import 'package:flutter_padrao/app/shared/auth/auth_controller.dart';
@@ -15,7 +17,10 @@ abstract class _ForgetStoreBase with Store {
   bool loading = false;
 
   @observable
-  String msgErro = '';
+  String msgFirebase = '';
+
+  @observable
+  bool checkError = false;
 
   @action
   submit()
@@ -24,7 +29,12 @@ abstract class _ForgetStoreBase with Store {
     auth.sendChangePasswordEmail(client.email).then((value) {
       loading = false;
       Modular.to.navigate('/auth');
-    }).catchError((e) => msgErro = ErrorPtBr().verificaCodeErro('auth/' + e.code));
+      msgFirebase = 'Senha enviada com sucesso!';
+    }).catchError((e) {
+      checkError = true;
+      msgFirebase = ErrorPtBr().verificaCodeErro('auth/' + e.code);
+    });
+
   }
 
 }

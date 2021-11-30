@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_padrao/app/modules/auth/change/change_page.dart';
 import 'package:flutter_padrao/app/modules/auth/verify/verify_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_padrao/app/shared/components/app_bar_widget.dart';
@@ -24,6 +25,7 @@ class VerifyPageState extends State<VerifyPage> {
   void initState() {
     super.initState();
     store.emailVerify();
+    store.verificaTipo();
   }
 
   @override
@@ -65,8 +67,8 @@ class VerifyPageState extends State<VerifyPage> {
         .size
         .height * 0.2;
     return Scaffold(
-      appBar: AppBarWidget(title: widget.title, size: altura, context: context),
-      body: Center(
+      appBar: AppBarWidget(title: store.tipo != 'verifyEmail' ? 'Trocar Senha': widget.title, size: altura, context: context),
+      body: store.tipo != 'verifyEmail' ? ChangePage() : Center(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Container(
               child: store.msgEmailVerify != 'Email validado com Sucesso!' ? _card('Erro!', Colors.red) : _card('Sucesso!', Colors.green)

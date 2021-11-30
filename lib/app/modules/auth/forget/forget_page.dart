@@ -20,12 +20,20 @@ class ForgetPageState extends State<ForgetPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     autorun((_) {
-      if (store.msgErro != '') {
-        SnackbarCustom()
-            .createSnackBar(store.msgErro, Colors.red, context);
+      if (store.checkError) {
+        if (store.msgFirebase != '') {
+          SnackbarCustom()
+              .createSnackBar(store.msgFirebase, Colors.red, context);
+        }
+      } else {
+        if (store.msgFirebase != '') {
+          SnackbarCustom()
+              .createSnackBar(store.msgFirebase, Colors.green, context);
+        }
       }
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +79,7 @@ class ForgetPageState extends State<ForgetPage> {
                               textStyle: const TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold)),
                           onPressed:
-                          store.client.isValidLogin ? store.submit : null,
+                          store.client.isValidEmail ? store.submit : null,
                           child: store.loading ?  CircularProgressIndicator(color: Colors.white,) : Text('ENVIAR SENHA'),
                         ),
                       );

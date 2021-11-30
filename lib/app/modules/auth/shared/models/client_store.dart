@@ -37,6 +37,20 @@ abstract class _ClientStoreBase with Store {
           && validatePassword() == null;
   }
 
+  @computed
+  bool get isValidChangePassword {
+    return
+      validateConfirmPassword() == null
+          && validatePassword() == null;
+  }
+
+
+  @computed
+  bool get isValidEmail {
+    return
+      validateEmail() == null;
+  }
+
   String? validateName(){
     if (name.isEmpty) {
       return 'Campo obrigatório';

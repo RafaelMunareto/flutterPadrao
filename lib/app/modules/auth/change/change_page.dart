@@ -8,8 +8,7 @@ import 'package:flutter_padrao/app/shared/utils/snackbar_custom.dart';
 import 'package:mobx/mobx.dart';
 
 class ChangePage extends StatefulWidget {
-  final String title;
-  const ChangePage({Key? key, this.title = 'ChangePage'}) : super(key: key);
+  const ChangePage({Key? key}) : super(key: key);
   @override
   ChangePageState createState() => ChangePageState();
 }
@@ -20,19 +19,25 @@ class ChangePageState extends State<ChangePage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     autorun((_) {
-      if (store.msgErro != '') {
-        SnackbarCustom()
-            .createSnackBar(store.msgErro, Colors.red, context);
+      if (store.checkError) {
+        if (store.msgFirebase != '') {
+          SnackbarCustom()
+              .createSnackBar(store.msgFirebase, Colors.red, context);
+        }
+      } else {
+        if (store.msgFirebase != '') {
+          SnackbarCustom()
+              .createSnackBar(store.msgFirebase, Colors.green, context);
+        }
       }
+
+      print(store.client.isValidChangePassword);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    var altura = MediaQuery.of(context).size.height * 0.2;
     return Scaffold(
-      appBar: AppBarWidget(
-          title: widget.title, size: altura, context: context, back: false),
       body: LayoutBuilder(builder: (context, constraint) {
         var largura = constraint.maxWidth;
         if (largura < 600) {
@@ -59,6 +64,9 @@ class ChangePageState extends State<ChangePage> {
                         obscure: true,
                         onChanged: store.client.changePassword,
                         errorText: store.client.validatePassword),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     TextFieldWidget(
                         labelText: 'confirmPassword',
                         obscure: true,
@@ -77,8 +85,8 @@ class ChangePageState extends State<ChangePage> {
                               textStyle: const TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold)),
                           onPressed:
-                          store.client.isValidLogin ? store.submit : null,
-                          child: store.loading ?  CircularProgressIndicator(color: Colors.white,) : Text('ALTERAR'),
+                          store.client.isValidChangePassword ? store.submit : null,
+                          child: store.loading ? CircularProgressIndicator(color: Colors.white,) : Text('ALTERAR'),
                         ),
                       );
                     }),

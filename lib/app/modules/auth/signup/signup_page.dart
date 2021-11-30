@@ -33,11 +33,13 @@ class SignupPageState extends State<SignupPage> {
     autorun((_) {
       if (store.checkGrupoEmail!) {
         if (store.msgFirebase != '') {
+          store.loading = false;
           SnackbarCustom()
               .createSnackBar(store.msgFirebase, Colors.red, context);
         }
       } else {
         if (store.msgFirebase != '') {
+          store.loading = false;
           SnackbarCustom()
               .createSnackBar(store.msgFirebase, Colors.green, context);
         }

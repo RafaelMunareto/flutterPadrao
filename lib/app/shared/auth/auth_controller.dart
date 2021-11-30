@@ -57,9 +57,9 @@ abstract class _AuthControllerBase with Store {
   }
 
   @action
-  Future changeResetPassword(password)
+  Future changeResetPassword(password, code)
   {
-    return authRepository.changeResetPassword(password);
+    return authRepository.changeResetPassword(password,code);
   }
 
   @action

@@ -58,9 +58,9 @@ abstract class _SignupStoreBase with Store {
         loading = false;
         Modular.to.navigate('/home');
       }).catchError((error) {
-        loading = false;
         checkGrupoEmail = true;
         msgFirebase = ErrorPtBr().verificaCodeErro('auth/' + error.code);
+        loading = false;
       });
     }
   }

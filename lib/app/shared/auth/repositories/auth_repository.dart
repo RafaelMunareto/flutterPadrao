@@ -95,44 +95,36 @@ class AuthRepository implements IAuthRepository {
 
       if (deepLink != null) {
         var actionCode = deepLink.queryParameters['oobCode'];
+        var tipo = deepLink.queryParameters['mode'];
         try {
-          if (actionCode != null) {
+          if (actionCode != null && tipo == 'verifyEmail') {
             await auth.applyActionCode(actionCode).then((value) {
               auth.currentUser?.reload();
-
-              db
-                  .collection('usuarios')
-                  .doc(auth.currentUser?.uid)
-                  .update(({"verificado": true}));
+              changeUserVerificacao();
               return 'Email validado com Sucesso!';
             });
           }
         } on FirebaseAuthException catch (e) {
           return ErrorPtBr().verificaCodeErro('auth/' + e.code);
         }
-        return 'Código Inválido';
       }
     } else {
       var uri = Uri.dataFromString(window.location.href);
       Map<String, String> params =
           uri.queryParameters; // query parameters automatically populated
       var actionCode = params['oobCode'];
+      var tipo = params['mode'];
       try {
-        if (actionCode != null) {
+        if (actionCode != null && tipo == 'verifyEmail') {
           await auth.checkActionCode(actionCode).then((value) {
             auth.currentUser?.reload();
-
-            db
-                .collection('usuarios')
-                .doc(auth.currentUser?.uid)
-                .update(({"verificado": true}));
+            changeUserVerificacao();
             return 'Email validado com Sucesso!';
           });
         }
       } on FirebaseAuthException catch (e) {
-        return ErrorPtBr().verificaCodeErro('auth/' + e.code);
+         return ErrorPtBr().verificaCodeErro('auth/' + e.code);
       }
-      return 'Código Inválido';
     }
   }
 
@@ -142,13 +134,7 @@ class AuthRepository implements IAuthRepository {
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((firebaseUser) async {
       firebaseUser.user!.updateDisplayName(name).then((value) {
-        db.collection('usuarios').doc(auth.currentUser!.uid).set({
-          "name": name,
-          "email": email,
-          "urlImage":
-              'https://firebasestorage.googleapis.com/v0/b/flutterpadrao.appspot.com/o/perfil%2Fbancario1.png?alt=media&token=ff79a9b9-7f1e-4e53-98c7-824324f74935',
-          "verificado": true
-        });
+        changeUserVerificacao();
       });
     });
   }
@@ -159,15 +145,16 @@ class AuthRepository implements IAuthRepository {
   }
 
   @override
-  Future changeResetPassword(password) async {
+  Future changeResetPassword(password, code) async {
     if (!kIsWeb) {
       final PendingDynamicLinkData? data = await fdl.getInitialLink();
       final Uri? deepLink = data?.link;
 
       if (deepLink != null) {
         var actionCode = deepLink.queryParameters['oobCode'];
+        var tipo = deepLink.queryParameters['mode'];
         try {
-          if (actionCode != null) {
+          if (actionCode != null && tipo == 'resetPassword') {
             await auth.applyActionCode(actionCode).then((value) {
               auth.currentUser?.reload();
               return auth.confirmPasswordReset(
@@ -178,19 +165,27 @@ class AuthRepository implements IAuthRepository {
           return ErrorPtBr().verificaCodeErro('auth/' + e.code);
         }
         return 'Código Inválido';
-      } else {
-        var uri = Uri.dataFromString(window.location.href);
-        Map<String, String> params =
-            uri.queryParameters; // query parameters automatically populated
-        var actionCode = params['oobCode'];
-        if (actionCode != null) {
-          await auth.applyActionCode(actionCode).then((value) {
-            auth.currentUser?.reload();
-            return auth.confirmPasswordReset(
-                code: actionCode, newPassword: password);
-          });
-        }
       }
+    }else{
+      var uri = Uri.dataFromString(window.location.href);
+      Map<String, String> params =
+          uri.queryParameters; // query parameters automatically populated
+      auth.confirmPasswordReset(
+          code: code, newPassword: password);
+      getUser().reload();
+
     }
+  }
+
+  changeUserVerificacao()
+  {
+    db.
+    collection('usuarios').doc(getUser().uid).update({
+      "name": getUser().displayName,
+      "email": getUser().email,
+      "urlImage":
+      'https://firebasestorage.googleapis.com/v0/b/flutterpadrao.appspot.com/o/perfil%2Fbancario1.png?alt=media&token=ff79a9b9-7f1e-4e53-98c7-824324f74935',
+      "verificado": true
+    });
   }
 }
