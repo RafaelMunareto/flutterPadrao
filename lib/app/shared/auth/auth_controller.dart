@@ -46,6 +46,23 @@ abstract class _AuthControllerBase with Store {
   }
 
   @action
+  Future getEmailPasswordLogin(email, password)
+  {
+    return authRepository.getEmailPasswordLogin(email, password);
+  }
+
+  @action
+  Future sendChangePasswordEmail(email){
+    return authRepository.sendChangePasswordEmail(email);
+  }
+
+  @action
+  Future changeResetPassword(password)
+  {
+    return authRepository.changeResetPassword(password);
+  }
+
+  @action
   Future logout() {
     return authRepository.getLogout();
   }

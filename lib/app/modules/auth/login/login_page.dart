@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_padrao/app/shared/components/app_bar_widget.dart';
 import 'package:flutter_padrao/app/shared/components/cursor_pointer_widget.dart';
 import 'package:flutter_padrao/app/shared/components/text_field_widget.dart';
+import 'package:flutter_padrao/app/shared/utils/snackbar_custom.dart';
+import 'package:mobx/mobx.dart';
 
 class LoginPage extends StatefulWidget {
   final String title;
@@ -17,7 +19,18 @@ class LoginPage extends StatefulWidget {
 
 class LoginPageState extends State<LoginPage> {
   final LoginStore store = Modular.get();
-  bool _hover = false;
+
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    autorun((_) {
+        if (store.msgErro != '') {
+          SnackbarCustom()
+              .createSnackBar(store.msgErro, Colors.red, context);
+        }
+      });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +82,7 @@ class LoginPageState extends State<LoginPage> {
                                   fontSize: 18, fontWeight: FontWeight.bold)),
                           onPressed:
                               store.client.isValidLogin ? store.submit : null,
-                          child: Text('CADASTRAR'),
+                          child: store.loading ?  CircularProgressIndicator(color: Colors.white,) : Text('CADASTRAR'),
                         ),
                       );
                     }),

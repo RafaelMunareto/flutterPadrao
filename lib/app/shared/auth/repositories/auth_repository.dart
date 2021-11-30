@@ -16,9 +16,8 @@ class AuthRepository implements IAuthRepository {
   final FirebaseDynamicLinks fdl = Modular.get();
 
   @override
-  Future getEmailPasswordLogin() {
-    // TODO: implement getEmailPasswordLogin
-    throw UnimplementedError();
+  Future getEmailPasswordLogin(email, password) async {
+    return auth.signInWithEmailAndPassword(email: email, password: password);
   }
 
   @override
@@ -97,18 +96,17 @@ class AuthRepository implements IAuthRepository {
       if (deepLink != null) {
         var actionCode = deepLink.queryParameters['oobCode'];
         try {
-          if(actionCode != null){
+          if (actionCode != null) {
             await auth.applyActionCode(actionCode).then((value) {
               auth.currentUser?.reload();
 
               db
                   .collection('usuarios')
-                  .doc('e4k4CNb9J9gtmPIwFt9bRf03XMv2')
+                  .doc(auth.currentUser?.uid)
                   .update(({"verificado": true}));
               return 'Email validado com Sucesso!';
             });
           }
-
         } on FirebaseAuthException catch (e) {
           return ErrorPtBr().verificaCodeErro('auth/' + e.code);
         }
@@ -120,18 +118,17 @@ class AuthRepository implements IAuthRepository {
           uri.queryParameters; // query parameters automatically populated
       var actionCode = params['oobCode'];
       try {
-        if(actionCode != null){
+        if (actionCode != null) {
           await auth.checkActionCode(actionCode).then((value) {
             auth.currentUser?.reload();
 
             db
                 .collection('usuarios')
-                .doc('OJGmRhxWNjhqNqGuU3C8Rd0FwLR2')
+                .doc(auth.currentUser?.uid)
                 .update(({"verificado": true}));
             return 'Email validado com Sucesso!';
           });
         }
-
       } on FirebaseAuthException catch (e) {
         return ErrorPtBr().verificaCodeErro('auth/' + e.code);
       }
@@ -149,12 +146,51 @@ class AuthRepository implements IAuthRepository {
           "name": name,
           "email": email,
           "urlImage":
-          'https://firebasestorage.googleapis.com/v0/b/flutterpadrao.appspot.com/o/perfil%2Fbancario1.png?alt=media&token=ff79a9b9-7f1e-4e53-98c7-824324f74935',
+              'https://firebasestorage.googleapis.com/v0/b/flutterpadrao.appspot.com/o/perfil%2Fbancario1.png?alt=media&token=ff79a9b9-7f1e-4e53-98c7-824324f74935',
           "verificado": true
         });
       });
     });
   }
 
+  @override
+  Future sendChangePasswordEmail(email) {
+    return auth.sendPasswordResetEmail(email: email);
+  }
 
+  @override
+  Future changeResetPassword(password) async {
+    if (!kIsWeb) {
+      final PendingDynamicLinkData? data = await fdl.getInitialLink();
+      final Uri? deepLink = data?.link;
+
+      if (deepLink != null) {
+        var actionCode = deepLink.queryParameters['oobCode'];
+        try {
+          if (actionCode != null) {
+            await auth.applyActionCode(actionCode).then((value) {
+              auth.currentUser?.reload();
+              return auth.confirmPasswordReset(
+                  code: actionCode, newPassword: password);
+            });
+          }
+        } on FirebaseAuthException catch (e) {
+          return ErrorPtBr().verificaCodeErro('auth/' + e.code);
+        }
+        return 'Código Inválido';
+      } else {
+        var uri = Uri.dataFromString(window.location.href);
+        Map<String, String> params =
+            uri.queryParameters; // query parameters automatically populated
+        var actionCode = params['oobCode'];
+        if (actionCode != null) {
+          await auth.applyActionCode(actionCode).then((value) {
+            auth.currentUser?.reload();
+            return auth.confirmPasswordReset(
+                code: actionCode, newPassword: password);
+          });
+        }
+      }
+    }
+  }
 }

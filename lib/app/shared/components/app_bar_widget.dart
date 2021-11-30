@@ -8,32 +8,7 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
   final controller;
   final bool settings;
   final bool back;
-  final logout;
   final String rota;
-
-  _popMenu() {
-    return PopupMenuButton(
-      icon: const Icon(Icons.more_vert),
-      itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-        PopupMenuItem(
-          mouseCursor: SystemMouseCursors.click,
-          onTap: () => Modular.to.navigate('/settings'),
-          child: ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Configurações'),
-          ),
-        ),
-        PopupMenuItem(
-          mouseCursor: SystemMouseCursors.click,
-          onTap: logout,
-          child: ListTile(
-            leading: Icon(Icons.logout),
-            title: Text('Logout'),
-          ),
-        ),
-      ],
-    );
-  }
 
   AppBarWidget(
       {Key? key,
@@ -43,9 +18,9 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
       this.controller,
       this.settings = false,
       this.back = true,
-      this.logout,
       this.rota = '/auth'})
       : super(key: key);
+
 
   @override
   Size get preferredSize => Size.fromHeight(size);
@@ -70,4 +45,21 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
       ),
     );
   }
+
+  _popMenu() {
+    return PopupMenuButton(
+      icon: const Icon(Icons.more_vert),
+      itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+        PopupMenuItem(
+          mouseCursor: SystemMouseCursors.click,
+          onTap: () => Modular.to.navigate('/settings'),
+          child: const ListTile(
+            leading: Icon(Icons.settings),
+            title: Text('Configurações'),
+          ),
+        ),
+      ],
+    );
+  }
+
 }
