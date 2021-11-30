@@ -3,6 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/modules/auth/signup/signup_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_padrao/app/shared/components/app_bar_widget.dart';
+import 'package:flutter_padrao/app/shared/components/cursor_pointer_widget.dart';
 import 'package:flutter_padrao/app/shared/components/text_field_widget.dart';
 import 'package:flutter_padrao/app/shared/utils/snackbar_custom.dart';
 import 'package:mobx/mobx.dart';
@@ -63,7 +64,7 @@ class SignupPageState extends State<SignupPage> {
                 }else if( largura < 768 ) {
                   largura = largura * 0.6;
                 }else if( largura < 1024 ) {
-                  largura = largura * 0.6;
+                  largura = largura * 0.4;
                 }else{
                   largura = largura * 0.2;
                 }
@@ -129,25 +130,7 @@ class SignupPageState extends State<SignupPage> {
                                     fontSize: 16.0,
                                   ),
                                 ),
-                                MouseRegion(
-                                  cursor: SystemMouseCursors.click,
-                                  onEnter: (event) => setState(() {
-                                    _hover = true;
-                                  }),
-                                  onExit: (event) => setState(() {
-                                    _hover = false;
-                                  }),
-                                  child: GestureDetector(
-                                    child: Text(
-                                      'Login',
-                                      style: TextStyle(
-                                          color: _hover ? Colors.blue : null, fontSize: 18.0, fontWeight: FontWeight.bold),
-                                    ),
-                                    onTap: () {
-                                      Modular.to.navigate('/auth');
-                                    },
-                                  ),
-                                )
+                                CursorPointerWidget(route: '/auth', label: 'Login')
                               ],
                             ),
                           ),
