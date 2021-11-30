@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_padrao/app/shared/utils/error_pt_br.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'auth_repository_interface.dart';
 
@@ -89,37 +90,54 @@ class AuthRepository implements IAuthRepository {
 
   @override
   Future<String?> emailVerify() async {
-    var actionCode = '';
     if (!kIsWeb) {
       final PendingDynamicLinkData? data = await fdl.getInitialLink();
       final Uri? deepLink = data?.link;
 
       if (deepLink != null) {
         var actionCode = deepLink.queryParameters['oobCode'];
+        try {
+          if(actionCode != null){
+            await auth.applyActionCode(actionCode).then((value) {
+              auth.currentUser?.reload();
 
+              db
+                  .collection('usuarios')
+                  .doc('e4k4CNb9J9gtmPIwFt9bRf03XMv2')
+                  .update(({"verificado": true}));
+              return 'Email validado com Sucesso!';
+            });
+          }
+
+        } on FirebaseAuthException catch (e) {
+          return ErrorPtBr().verificaCodeErro('auth/' + e.code);
+        }
+        return 'Código Inválido';
       }
     } else {
       var uri = Uri.dataFromString(window.location.href);
       Map<String, String> params =
           uri.queryParameters; // query parameters automatically populated
       var actionCode = params['oobCode'];
-    }
-
       try {
-        await auth.checkActionCode(actionCode);
-        await auth.applyActionCode(actionCode);
+        if(actionCode != null){
+          await auth.checkActionCode(actionCode).then((value) {
+            auth.currentUser?.reload();
 
-        // If successful, reload the user:
-        auth.currentUser?.reload();
-        db
-            .collection('usuarios')
-            .doc(auth.currentUser?.uid)
-            .update(({"validacao": true}));
-        return 'Email validado com Sucesso!';
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'invalid-action-code') {
-          return 'Código inválido!';
+            db
+                .collection('usuarios')
+                .doc('OJGmRhxWNjhqNqGuU3C8Rd0FwLR2')
+                .update(({"verificado": true}));
+            return 'Email validado com Sucesso!';
+          });
         }
+
+      } on FirebaseAuthException catch (e) {
+        return ErrorPtBr().verificaCodeErro('auth/' + e.code);
       }
+      return 'Código Inválido';
+    }
   }
+
+
 }

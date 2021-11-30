@@ -10,14 +10,14 @@ abstract class _VerifyStoreBase with Store {
   AuthController auth = Modular.get();
 
   @observable
-  String msgEmailVerify = '';
+  String? msgEmailVerify = '';
 
   @action
   emailVerify()
   {
     auth.authRepository.emailVerify().then((value) {
-      msgEmailVerify = value!;
-    });
+      msgEmailVerify = value;
+    }).catchError((e) => msgEmailVerify = e);
   }
 
 }

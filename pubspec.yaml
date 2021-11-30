@@ -54,5 +54,6 @@ scripts:
   mobx: flutter pub run build_runner watch --delete-conflicting-outputs
   chrome: flutter run -d chrome --web-renderer html
   build_bundle: flutter build appbundle
+  build_web: flutter build web && git add . && git commit -m "build" && git push
   build_apk: flutter build apk
   launch_icon: flutter pub run flutter_launcher_icons:main

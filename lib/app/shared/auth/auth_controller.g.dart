@@ -62,6 +62,51 @@ mixin _$AuthController on _AuthControllerBase, Store {
   }
 
   @override
+  Future<dynamic> createUserLinkEmail(
+      dynamic name, dynamic email, dynamic password) {
+    final _$actionInfo = _$_AuthControllerBaseActionController.startAction(
+        name: '_AuthControllerBase.createUserLinkEmail');
+    try {
+      return super.createUserLinkEmail(name, email, password);
+    } finally {
+      _$_AuthControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  Future<dynamic> getGrupoEmail() {
+    final _$actionInfo = _$_AuthControllerBaseActionController.startAction(
+        name: '_AuthControllerBase.getGrupoEmail');
+    try {
+      return super.getGrupoEmail();
+    } finally {
+      _$_AuthControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  Future<dynamic> logout() {
+    final _$actionInfo = _$_AuthControllerBaseActionController.startAction(
+        name: '_AuthControllerBase.logout');
+    try {
+      return super.logout();
+    } finally {
+      _$_AuthControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  Future<String?> emailVerify() {
+    final _$actionInfo = _$_AuthControllerBaseActionController.startAction(
+        name: '_AuthControllerBase.emailVerify');
+    try {
+      return super.emailVerify();
+    } finally {
+      _$_AuthControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 status: ${status},
