@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/modules/home/models/version_model.dart';
 import 'package:flutter_padrao/app/modules/home/services/interfaces/version_service_interface.dart';

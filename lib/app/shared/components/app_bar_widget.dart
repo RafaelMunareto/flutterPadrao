@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -6,6 +7,7 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
   final double size;
   final context;
   final controller;
+  final User? user;
   final bool settings;
   final bool back;
   final String rota;
@@ -16,11 +18,11 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
       this.size = 200,
       this.context,
       this.controller,
+      this.user,
       this.settings = false,
       this.back = true,
       this.rota = '/auth'})
       : super(key: key);
-
 
   @override
   Size get preferredSize => Size.fromHeight(size);
@@ -50,6 +52,14 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
     return PopupMenuButton(
       icon: const Icon(Icons.more_vert),
       itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+       PopupMenuItem(
+          child:   user != null ? InputChip(
+            avatar: CircleAvatar(
+              backgroundImage: NetworkImage(user!.photoURL.toString()),
+            ),
+            label: Text(user!.displayName ?? ''),
+          ) : Container(),
+        ),
         PopupMenuItem(
           mouseCursor: SystemMouseCursors.click,
           onTap: () => Modular.to.navigate('/settings'),
@@ -61,5 +71,4 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
       ],
     );
   }
-
 }

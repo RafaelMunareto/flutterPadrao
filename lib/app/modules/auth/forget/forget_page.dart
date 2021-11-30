@@ -34,13 +34,12 @@ class ForgetPageState extends State<ForgetPage> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     var altura = MediaQuery.of(context).size.height * 0.2;
     return Scaffold(
       appBar: AppBarWidget(
-          title: widget.title, size: altura, context: context, back: false),
+          title: widget.title, size: altura, context: context, back: true),
       body: LayoutBuilder(builder: (context, constraint) {
         var largura = constraint.maxWidth;
         if (largura < 600) {

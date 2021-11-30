@@ -9,7 +9,7 @@ import 'package:flutter_padrao/app/shared/components/app_bar_widget.dart';
 class SettingsPage extends StatefulWidget {
   final String title;
 
-  const SettingsPage({Key? key, this.title = 'Settings'}) : super(key: key);
+  const SettingsPage({Key? key, this.title = 'Configurações'}) : super(key: key);
 
   @override
   SettingsPageState createState() => SettingsPageState();

@@ -1,4 +1,8 @@
+import 'dart:js';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/shared/auth/repositories/auth_repository_interface.dart';
 import 'package:mobx/mobx.dart';
 part 'auth_controller.g.dart';
@@ -71,6 +75,14 @@ abstract class _AuthControllerBase with Store {
   Future<String?> emailVerify()
   {
     return authRepository.emailVerify();
+  }
+
+  @action
+  usuarioLogado()
+  {
+    if(user == null){
+      Modular.to.navigate('/auth');
+    }
   }
 
 }

@@ -73,7 +73,7 @@ abstract class _ClientStoreBase with Store {
     if (password.isEmpty) {
       return 'Campo obrigatório';
     } else if (password.length < 6) {
-      return 'Necessário ser maior que 3 caracteres';
+      return 'Necessário ser maior que 6 caracteres';
     }
     return null;
   }
@@ -84,7 +84,7 @@ abstract class _ClientStoreBase with Store {
     } else if (confirmPassword.isEmpty) {
       return 'Campo obrigatório';
     } else if (confirmPassword.length < 6) {
-      return 'Necessário ser maior que 3 caracteres';
+      return 'Necessário ser maior que 6 caracteres';
     }
     return null;
   }
