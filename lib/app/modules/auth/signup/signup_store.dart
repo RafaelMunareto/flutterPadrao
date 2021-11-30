@@ -52,13 +52,11 @@ abstract class _SignupStoreBase with Store {
       checkGrupoEmail = true;
     } else {
       loading = true;
-      auth.authRepository
-          .createUserSendEmailLink(client.name, client.email, client.password)
+      auth.createUserEmailPassword(client.name, client.email, client.password)
           .then((value) {
         checkGrupoEmail = false;
-        msgFirebase = 'Email enviado com sucesso!';
         loading = false;
-        Modular.to.navigate('/auth');
+        Modular.to.navigate('/home');
       }).catchError((error) {
         loading = false;
         checkGrupoEmail = true;

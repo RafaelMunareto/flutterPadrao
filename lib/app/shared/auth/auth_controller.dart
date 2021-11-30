@@ -35,6 +35,11 @@ abstract class _AuthControllerBase with Store {
   }
 
   @action
+  Future createUserEmailPassword(name, email, password)  {
+    return authRepository.createUserEmailPassword(name, email, password);
+  }
+
+  @action
   Future getGrupoEmail()
   {
     return authRepository.getGrupoEmail();

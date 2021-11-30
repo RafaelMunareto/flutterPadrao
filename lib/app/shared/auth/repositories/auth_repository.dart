@@ -139,5 +139,22 @@ class AuthRepository implements IAuthRepository {
     }
   }
 
+  @override
+  Future createUserEmailPassword(name, email, password) {
+    return auth
+        .createUserWithEmailAndPassword(email: email, password: password)
+        .then((firebaseUser) async {
+      firebaseUser.user!.updateDisplayName(name).then((value) {
+        db.collection('usuarios').doc(auth.currentUser!.uid).set({
+          "name": name,
+          "email": email,
+          "urlImage":
+          'https://firebasestorage.googleapis.com/v0/b/flutterpadrao.appspot.com/o/perfil%2Fbancario1.png?alt=media&token=ff79a9b9-7f1e-4e53-98c7-824324f74935',
+          "verificado": true
+        });
+      });
+    });
+  }
+
 
 }
