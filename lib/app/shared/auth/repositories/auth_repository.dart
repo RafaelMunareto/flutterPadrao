@@ -1,13 +1,18 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'dart:html';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'auth_repository_interface.dart';
 
 class AuthRepository implements IAuthRepository {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  final FirebaseAuth auth;
-
-  AuthRepository({required this.auth});
+  final FirebaseAuth auth = Modular.get();
+  final FirebaseFirestore db = Modular.get();
+  final FirebaseDynamicLinks fdl = Modular.get();
 
   @override
   Future getEmailPasswordLogin() {
@@ -31,7 +36,7 @@ class AuthRepository implements IAuthRepository {
   getGoogleLogin() async {
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth =
-    await googleUser!.authentication;
+        await googleUser!.authentication;
 
     final AuthCredential credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
@@ -50,5 +55,71 @@ class AuthRepository implements IAuthRepository {
   @override
   Future getLogout() {
     return auth.signOut();
+  }
+
+  @override
+  Future createUserSendEmailLink(name, email, password) async {
+    return auth
+        .createUserWithEmailAndPassword(email: email, password: password)
+        .then((firebaseUser) async {
+      User? user = FirebaseAuth.instance.currentUser;
+      var actionCodeSettings = ActionCodeSettings(
+        url: 'https://flutterpadrao.firebaseapp.com',
+        handleCodeInApp: true,
+      );
+      if (user != null && !user.emailVerified) {
+        await user.sendEmailVerification(actionCodeSettings);
+      }
+      firebaseUser.user!.updateDisplayName(name).then((value) {
+        db.collection('usuarios').doc(auth.currentUser!.uid).set({
+          "name": name,
+          "email": email,
+          "urlImage":
+              'https://firebasestorage.googleapis.com/v0/b/flutterpadrao.appspot.com/o/perfil%2Fbancario1.png?alt=media&token=ff79a9b9-7f1e-4e53-98c7-824324f74935',
+          "verificado": false
+        });
+      });
+    });
+  }
+
+  @override
+  Future getGrupoEmail() {
+    return db.collection('grupoEmail').get();
+  }
+
+  @override
+  Future<String?> emailVerify() async {
+    var actionCode = '';
+    if (!kIsWeb) {
+      final PendingDynamicLinkData? data = await fdl.getInitialLink();
+      final Uri? deepLink = data?.link;
+
+      if (deepLink != null) {
+        var actionCode = deepLink.queryParameters['oobCode'];
+
+      }
+    } else {
+      var uri = Uri.dataFromString(window.location.href);
+      Map<String, String> params =
+          uri.queryParameters; // query parameters automatically populated
+      var actionCode = params['oobCode'];
+    }
+
+      try {
+        await auth.checkActionCode(actionCode);
+        await auth.applyActionCode(actionCode);
+
+        // If successful, reload the user:
+        auth.currentUser?.reload();
+        db
+            .collection('usuarios')
+            .doc(auth.currentUser?.uid)
+            .update(({"validacao": true}));
+        return 'Email validado com Sucesso!';
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'invalid-action-code') {
+          return 'Código inválido!';
+        }
+      }
   }
 }

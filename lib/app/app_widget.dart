@@ -27,6 +27,8 @@ class _AppWidgetState extends State<AppWidget> {
     theme.get('theme').then((value) {
       if(value != null){
         darkLight = value[0];
+      }else{
+        darkLight = 'light';
       }
     }).then((value) {
       darkLight == 'light' ? _themeMode = ThemeMode.light :  _themeMode = ThemeMode.dark;

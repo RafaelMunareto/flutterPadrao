@@ -29,9 +29,28 @@ abstract class _AuthControllerBase with Store {
     user = await authRepository.getGoogleLogin();
   }
 
+  @action
+  Future createUserLinkEmail(name, email, password)  {
+     return authRepository.createUserSendEmailLink(name, email, password);
+  }
+
+  @action
+  Future getGrupoEmail()
+  {
+    return authRepository.getGrupoEmail();
+  }
+
+  @action
   Future logout() {
     return authRepository.getLogout();
   }
+
+  @action
+  Future<String?> emailVerify()
+  {
+    return authRepository.emailVerify();
+  }
+
 }
 
 enum AuthStatus { loading, login, logoff }

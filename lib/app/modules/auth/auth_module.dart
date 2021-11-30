@@ -1,3 +1,4 @@
+import 'package:flutter_padrao/app/modules/auth/shared/models/client_store.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/modules/auth/change/change_page.dart';
 import 'package:flutter_padrao/app/modules/auth/change/change_store.dart';
@@ -13,7 +14,8 @@ import 'package:flutter_padrao/app/modules/auth/verify/verify_store.dart';
 class AuthModule extends Module {
   @override
   final List<Bind> binds = [
-    Bind.lazySingleton((i) => LoginStore(auth: i.get())),
+    Bind.lazySingleton((i) => ClientStore()),
+    Bind.lazySingleton((i) => LoginStore()),
     Bind.lazySingleton((i) => SignupStore()),
     Bind.lazySingleton((i) => VerifyStore()),
     Bind.lazySingleton((i) => ForgetStore()),
@@ -22,12 +24,20 @@ class AuthModule extends Module {
 
   @override
   final List<ModularRoute> routes = [
-    ChildRoute('', child:  (context, args) => const LoginPage(), transition: TransitionType.leftToRightWithFade),
-    ChildRoute('signup', child:  (context, args) => const SignupPage(), transition: TransitionType.leftToRightWithFade),
-    ChildRoute('verify', child:  (context, args) => const VerifyPage(), transition: TransitionType.leftToRightWithFade),
-    ChildRoute('forget', child:  (context, args) => const ForgetPage(), transition: TransitionType.leftToRightWithFade),
-    ChildRoute('change', child:  (context, args) => const ChangePage(), transition: TransitionType.leftToRightWithFade),
-
+    ChildRoute('',
+        child: (context, args) => const LoginPage(),
+        transition: TransitionType.leftToRightWithFade),
+    ChildRoute('signup',
+        child: (context, args) => const SignupPage(),
+        transition: TransitionType.leftToRightWithFade),
+    ChildRoute('verify',
+        child: (context, args) => const VerifyPage(),
+        transition: TransitionType.leftToRightWithFade),
+    ChildRoute('forget',
+        child: (context, args) => const ForgetPage(),
+        transition: TransitionType.leftToRightWithFade),
+    ChildRoute('change',
+        child: (context, args) => const ChangePage(),
+        transition: TransitionType.leftToRightWithFade),
   ];
-
 }
