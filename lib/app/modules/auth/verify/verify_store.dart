@@ -1,4 +1,4 @@
-import 'dart:html';
+//import 'dart:html';
 
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/shared/auth/auth_controller.dart';
@@ -20,7 +20,8 @@ abstract class _VerifyStoreBase with Store {
   @action
   verificaTipo()
   {
-    var uri = Uri.dataFromString(window.location.href);
+    //var uri = Uri.dataFromString(window.location.href);
+    var uri;
     Map<String, String> params =
         uri.queryParameters; // query parameters automatically populated
     var actionCode = params['mode'];

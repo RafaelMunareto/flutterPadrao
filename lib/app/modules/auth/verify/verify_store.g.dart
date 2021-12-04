@@ -12,20 +12,46 @@ mixin _$VerifyStore on _VerifyStoreBase, Store {
   final _$msgEmailVerifyAtom = Atom(name: '_VerifyStoreBase.msgEmailVerify');
 
   @override
-  String? get msgEmailVerify {
+  String get msgEmailVerify {
     _$msgEmailVerifyAtom.reportRead();
     return super.msgEmailVerify;
   }
 
   @override
-  set msgEmailVerify(String? value) {
+  set msgEmailVerify(String value) {
     _$msgEmailVerifyAtom.reportWrite(value, super.msgEmailVerify, () {
       super.msgEmailVerify = value;
     });
   }
 
+  final _$tipoAtom = Atom(name: '_VerifyStoreBase.tipo');
+
+  @override
+  String get tipo {
+    _$tipoAtom.reportRead();
+    return super.tipo;
+  }
+
+  @override
+  set tipo(String value) {
+    _$tipoAtom.reportWrite(value, super.tipo, () {
+      super.tipo = value;
+    });
+  }
+
   final _$_VerifyStoreBaseActionController =
       ActionController(name: '_VerifyStoreBase');
+
+  @override
+  dynamic verificaTipo() {
+    final _$actionInfo = _$_VerifyStoreBaseActionController.startAction(
+        name: '_VerifyStoreBase.verificaTipo');
+    try {
+      return super.verificaTipo();
+    } finally {
+      _$_VerifyStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   dynamic emailVerify() {
@@ -41,7 +67,8 @@ mixin _$VerifyStore on _VerifyStoreBase, Store {
   @override
   String toString() {
     return '''
-msgEmailVerify: ${msgEmailVerify}
+msgEmailVerify: ${msgEmailVerify},
+tipo: ${tipo}
     ''';
   }
 }

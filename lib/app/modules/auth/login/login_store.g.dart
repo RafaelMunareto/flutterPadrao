@@ -24,6 +24,21 @@ mixin _$LoginStore on _LoginStoreBase, Store {
     });
   }
 
+  final _$msgErroAtom = Atom(name: '_LoginStoreBase.msgErro');
+
+  @override
+  String get msgErro {
+    _$msgErroAtom.reportRead();
+    return super.msgErro;
+  }
+
+  @override
+  set msgErro(String value) {
+    _$msgErroAtom.reportWrite(value, super.msgErro, () {
+      super.msgErro = value;
+    });
+  }
+
   final _$loginWithGoogleAsyncAction =
       AsyncAction('_LoginStoreBase.loginWithGoogle');
 
@@ -49,7 +64,8 @@ mixin _$LoginStore on _LoginStoreBase, Store {
   @override
   String toString() {
     return '''
-loading: ${loading}
+loading: ${loading},
+msgErro: ${msgErro}
     ''';
   }
 }

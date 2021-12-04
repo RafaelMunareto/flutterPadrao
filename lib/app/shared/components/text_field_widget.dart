@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
-class TextFieldWidget extends StatelessWidget {
+class TextFieldWidget extends StatefulWidget {
   final String labelText;
   final onChanged;
   final bool obscure;
@@ -16,15 +16,57 @@ class TextFieldWidget extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<TextFieldWidget> createState() => _TextFieldWidgetState();
+}
+
+class _TextFieldWidgetState extends State<TextFieldWidget>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animacaoSize;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller =
+        AnimationController(duration: Duration(seconds: 2), vsync: this);
+
+    _animacaoSize = Tween<double>(begin: 0, end: 500).animate(
+        CurvedAnimation(parent: _controller, curve: Curves.decelerate));
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    return AnimatedBuilder(animation: _animacaoSize, builder: _buildAnimation);
+  }
+
+  Widget _buildAnimation(BuildContext context, Widget? child) {
     return Observer(builder: (_) {
-      return TextField(
-        onChanged: onChanged,
-        obscureText: obscure,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: labelText,
-          errorText: errorText == null ? null : errorText(),
+      return Container(
+        width: _animacaoSize.value,
+        padding: const EdgeInsets.all(4),
+        // decoration: BoxDecoration(
+        //     color: Colors.white,
+        //     borderRadius: BorderRadius.circular(20),
+        //     boxShadow: [
+        //       BoxShadow(
+        //           color: Colors.grey.shade200, blurRadius: 15, spreadRadius: 4)
+        //     ]),
+        child: TextField(
+          onChanged: widget.onChanged,
+          obscureText: widget.obscure,
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            labelText: widget.labelText,
+            errorText: widget.errorText == null ? null : widget.errorText(),
+          ),
         ),
       );
     });

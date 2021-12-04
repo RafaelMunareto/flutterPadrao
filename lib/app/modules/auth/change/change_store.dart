@@ -1,4 +1,4 @@
-import 'dart:html';
+//import 'dart:html';
 
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/modules/auth/shared/models/client_store.dart';
@@ -25,7 +25,8 @@ abstract class _ChangeStoreBase with Store {
   @action
   submit()
   {
-    var uri = Uri.dataFromString(window.location.href);
+    //var uri = Uri.dataFromString(window.location.href);
+    var uri;
     Map<String, String> params =
         uri.queryParameters; // query parameters automatically populated
     var code = params['oobCode'];

@@ -3,7 +3,9 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/modules/auth/login/login_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_padrao/app/shared/components/app_bar_widget.dart';
+import 'package:flutter_padrao/app/shared/components/button_widget.dart';
 import 'package:flutter_padrao/app/shared/components/cursor_pointer_widget.dart';
+import 'package:flutter_padrao/app/shared/components/link_rote_widget.dart';
 import 'package:flutter_padrao/app/shared/components/text_field_widget.dart';
 import 'package:flutter_padrao/app/shared/utils/snackbar_custom.dart';
 import 'package:mobx/mobx.dart';
@@ -20,16 +22,14 @@ class LoginPage extends StatefulWidget {
 class LoginPageState extends State<LoginPage> {
   final LoginStore store = Modular.get();
 
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     autorun((_) {
-        if (store.msgErro != '') {
-          SnackbarCustom()
-              .createSnackBar(store.msgErro, Colors.red, context);
-        }
-      });
+      if (store.msgErro != '') {
+        SnackbarCustom().createSnackBar(store.msgErro, Colors.red, context);
+      }
+    });
   }
 
   @override
@@ -39,7 +39,9 @@ class LoginPageState extends State<LoginPage> {
       appBar: AppBarWidget(
           title: widget.title, size: altura, context: context, back: false),
       body: LayoutBuilder(builder: (context, constraint) {
+
         var largura = constraint.maxWidth;
+
         if (largura < 600) {
           largura = largura * 1;
         } else if (largura < 768) {
@@ -54,7 +56,7 @@ class LoginPageState extends State<LoginPage> {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Center(
-              child: Container(
+              child: SizedBox(
                 width: largura,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -72,42 +74,17 @@ class LoginPageState extends State<LoginPage> {
                         onChanged: store.client.changePassword,
                         errorText: store.client.validatePassword),
                     Observer(builder: (_) {
-                      return Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 24, 8, 16),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 50, vertical: 20),
-                              textStyle: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold)),
-                          onPressed:
-                              store.client.isValidLogin ? store.submit : null,
-                          child: store.loading ?  CircularProgressIndicator(color: Colors.white,) : Text('CADASTRAR'),
-                        ),
-                      );
+                      return ButtonWidget(
+                          label: 'LOGIN',
+                          function:
+                              store.client.isValidLogin ? store.submit : null);
                     }),
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0,8,8,32),
-                        child: Container(
-                          child: CursorPointerWidget(route: '/auth/forget', label: 'Esqueceu a senha'),
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Não possui cadastro?  ',
-                            style: TextStyle(
-                              fontSize: 16.0,
-                            ),
-                          ),
-                          CursorPointerWidget(route: '/auth/signup', label: 'Registre-se')
-                        ],
-                      ),
-                    ),
+                    const LinkRoteWidget(
+                        labelBold: 'Esqueceu a senha', rota: '/auth/forget'),
+                    const LinkRoteWidget(
+                        label: 'Não possui cadastro? ',
+                        labelBold: 'Registre-se',
+                        rota: '/auth/signup')
                   ],
                 ),
               ),

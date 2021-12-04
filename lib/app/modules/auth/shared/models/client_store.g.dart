@@ -16,6 +16,20 @@ mixin _$ClientStore on _ClientStoreBase, Store {
       (_$isValidLoginComputed ??= Computed<bool>(() => super.isValidLogin,
               name: '_ClientStoreBase.isValidLogin'))
           .value;
+  Computed<bool>? _$isValidChangePasswordComputed;
+
+  @override
+  bool get isValidChangePassword => (_$isValidChangePasswordComputed ??=
+          Computed<bool>(() => super.isValidChangePassword,
+              name: '_ClientStoreBase.isValidChangePassword'))
+      .value;
+  Computed<bool>? _$isValidEmailComputed;
+
+  @override
+  bool get isValidEmail =>
+      (_$isValidEmailComputed ??= Computed<bool>(() => super.isValidEmail,
+              name: '_ClientStoreBase.isValidEmail'))
+          .value;
 
   final _$nameAtom = Atom(name: '_ClientStoreBase.name');
 
@@ -131,7 +145,9 @@ name: ${name},
 email: ${email},
 password: ${password},
 confirmPassword: ${confirmPassword},
-isValidLogin: ${isValidLogin}
+isValidLogin: ${isValidLogin},
+isValidChangePassword: ${isValidChangePassword},
+isValidEmail: ${isValidEmail}
     ''';
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/modules/auth/change/change_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_padrao/app/shared/components/app_bar_widget.dart';
+import 'package:flutter_padrao/app/shared/components/button_widget.dart';
 import 'package:flutter_padrao/app/shared/components/text_field_widget.dart';
 import 'package:flutter_padrao/app/shared/utils/snackbar_custom.dart';
 import 'package:mobx/mobx.dart';
@@ -76,19 +77,7 @@ class ChangePageState extends State<ChangePage> {
                       height: 20,
                     ),
                     Observer(builder: (_) {
-                      return Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 24, 8, 16),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 50, vertical: 20),
-                              textStyle: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold)),
-                          onPressed:
-                          store.client.isValidChangePassword ? store.submit : null,
-                          child: store.loading ? CircularProgressIndicator(color: Colors.white,) : Text('ALTERAR'),
-                        ),
-                      );
+                      return ButtonWidget(label: 'ALTERAR', function: store.client.isValidChangePassword ? store.submit : null);
                     }),
                   ],
                 ),

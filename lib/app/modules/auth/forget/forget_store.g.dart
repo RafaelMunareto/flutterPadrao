@@ -9,18 +9,48 @@ part of 'forget_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$ForgetStore on _ForgetStoreBase, Store {
-  final _$valueAtom = Atom(name: '_ForgetStoreBase.value');
+  final _$loadingAtom = Atom(name: '_ForgetStoreBase.loading');
 
   @override
-  int get value {
-    _$valueAtom.reportRead();
-    return super.value;
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
   }
 
   @override
-  set value(int value) {
-    _$valueAtom.reportWrite(value, super.value, () {
-      super.value = value;
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
+    });
+  }
+
+  final _$msgFirebaseAtom = Atom(name: '_ForgetStoreBase.msgFirebase');
+
+  @override
+  String get msgFirebase {
+    _$msgFirebaseAtom.reportRead();
+    return super.msgFirebase;
+  }
+
+  @override
+  set msgFirebase(String value) {
+    _$msgFirebaseAtom.reportWrite(value, super.msgFirebase, () {
+      super.msgFirebase = value;
+    });
+  }
+
+  final _$checkErrorAtom = Atom(name: '_ForgetStoreBase.checkError');
+
+  @override
+  bool get checkError {
+    _$checkErrorAtom.reportRead();
+    return super.checkError;
+  }
+
+  @override
+  set checkError(bool value) {
+    _$checkErrorAtom.reportWrite(value, super.checkError, () {
+      super.checkError = value;
     });
   }
 
@@ -28,11 +58,11 @@ mixin _$ForgetStore on _ForgetStoreBase, Store {
       ActionController(name: '_ForgetStoreBase');
 
   @override
-  void increment() {
+  dynamic submit() {
     final _$actionInfo = _$_ForgetStoreBaseActionController.startAction(
-        name: '_ForgetStoreBase.increment');
+        name: '_ForgetStoreBase.submit');
     try {
-      return super.increment();
+      return super.submit();
     } finally {
       _$_ForgetStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -41,7 +71,9 @@ mixin _$ForgetStore on _ForgetStoreBase, Store {
   @override
   String toString() {
     return '''
-value: ${value}
+loading: ${loading},
+msgFirebase: ${msgFirebase},
+checkError: ${checkError}
     ''';
   }
 }

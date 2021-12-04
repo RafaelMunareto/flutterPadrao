@@ -1,4 +1,4 @@
-import 'dart:html';
+// import 'dart:html';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -109,7 +109,8 @@ class AuthRepository implements IAuthRepository {
         }
       }
     } else {
-      var uri = Uri.dataFromString(window.location.href);
+     // var uri = Uri.dataFromString(window.location.href);
+      var uri;
       Map<String, String> params =
           uri.queryParameters; // query parameters automatically populated
       var actionCode = params['oobCode'];
@@ -168,7 +169,8 @@ class AuthRepository implements IAuthRepository {
         return 'Código Inválido';
       }
     }else{
-      var uri = Uri.dataFromString(window.location.href);
+      //var uri = Uri.dataFromString(window.location.href);
+      var uri;
       Map<String, String> params =
           uri.queryParameters; // query parameters automatically populated
       auth.confirmPasswordReset(

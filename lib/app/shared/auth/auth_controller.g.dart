@@ -74,11 +74,56 @@ mixin _$AuthController on _AuthControllerBase, Store {
   }
 
   @override
+  Future<dynamic> createUserEmailPassword(
+      dynamic name, dynamic email, dynamic password) {
+    final _$actionInfo = _$_AuthControllerBaseActionController.startAction(
+        name: '_AuthControllerBase.createUserEmailPassword');
+    try {
+      return super.createUserEmailPassword(name, email, password);
+    } finally {
+      _$_AuthControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   Future<dynamic> getGrupoEmail() {
     final _$actionInfo = _$_AuthControllerBaseActionController.startAction(
         name: '_AuthControllerBase.getGrupoEmail');
     try {
       return super.getGrupoEmail();
+    } finally {
+      _$_AuthControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  Future<dynamic> getEmailPasswordLogin(dynamic email, dynamic password) {
+    final _$actionInfo = _$_AuthControllerBaseActionController.startAction(
+        name: '_AuthControllerBase.getEmailPasswordLogin');
+    try {
+      return super.getEmailPasswordLogin(email, password);
+    } finally {
+      _$_AuthControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  Future<dynamic> sendChangePasswordEmail(dynamic email) {
+    final _$actionInfo = _$_AuthControllerBaseActionController.startAction(
+        name: '_AuthControllerBase.sendChangePasswordEmail');
+    try {
+      return super.sendChangePasswordEmail(email);
+    } finally {
+      _$_AuthControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  Future<dynamic> changeResetPassword(dynamic password, dynamic code) {
+    final _$actionInfo = _$_AuthControllerBaseActionController.startAction(
+        name: '_AuthControllerBase.changeResetPassword');
+    try {
+      return super.changeResetPassword(password, code);
     } finally {
       _$_AuthControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -101,6 +146,17 @@ mixin _$AuthController on _AuthControllerBase, Store {
         name: '_AuthControllerBase.emailVerify');
     try {
       return super.emailVerify();
+    } finally {
+      _$_AuthControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic usuarioLogado() {
+    final _$actionInfo = _$_AuthControllerBaseActionController.startAction(
+        name: '_AuthControllerBase.usuarioLogado');
+    try {
+      return super.usuarioLogado();
     } finally {
       _$_AuthControllerBaseActionController.endAction(_$actionInfo);
     }
