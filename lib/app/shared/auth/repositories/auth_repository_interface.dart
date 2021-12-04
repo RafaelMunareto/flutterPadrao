@@ -13,6 +13,7 @@ abstract class IAuthRepository {
   Future createUserSendEmailLink(name, email, password);
   Future createUserEmailPassword(name, email, password);
   Future getGrupoEmail();
+  createDynamicLinks(email,mode);
   Future<String?> emailVerify();
 
 }

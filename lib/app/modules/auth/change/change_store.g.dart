@@ -24,6 +24,21 @@ mixin _$ChangeStore on _ChangeStoreBase, Store {
     });
   }
 
+  final _$codeAtom = Atom(name: '_ChangeStoreBase.code');
+
+  @override
+  String? get code {
+    _$codeAtom.reportRead();
+    return super.code;
+  }
+
+  @override
+  set code(String? value) {
+    _$codeAtom.reportWrite(value, super.code, () {
+      super.code = value;
+    });
+  }
+
   final _$msgFirebaseAtom = Atom(name: '_ChangeStoreBase.msgFirebase');
 
   @override
@@ -58,6 +73,17 @@ mixin _$ChangeStore on _ChangeStoreBase, Store {
       ActionController(name: '_ChangeStoreBase');
 
   @override
+  dynamic setCode(dynamic value) {
+    final _$actionInfo = _$_ChangeStoreBaseActionController.startAction(
+        name: '_ChangeStoreBase.setCode');
+    try {
+      return super.setCode(value);
+    } finally {
+      _$_ChangeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic submit() {
     final _$actionInfo = _$_ChangeStoreBaseActionController.startAction(
         name: '_ChangeStoreBase.submit');
@@ -72,6 +98,7 @@ mixin _$ChangeStore on _ChangeStoreBase, Store {
   String toString() {
     return '''
 loading: ${loading},
+code: ${code},
 msgFirebase: ${msgFirebase},
 checkError: ${checkError}
     ''';

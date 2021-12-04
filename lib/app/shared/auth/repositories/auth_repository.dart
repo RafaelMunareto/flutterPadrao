@@ -1,5 +1,4 @@
-// import 'dart:html';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -89,7 +88,6 @@ class AuthRepository implements IAuthRepository {
 
   @override
   Future<String?> emailVerify() async {
-    if (!kIsWeb) {
       final PendingDynamicLinkData? data = await fdl.getInitialLink();
       final Uri? deepLink = data?.link;
 
@@ -108,25 +106,6 @@ class AuthRepository implements IAuthRepository {
           return ErrorPtBr().verificaCodeErro('auth/' + e.code);
         }
       }
-    } else {
-     // var uri = Uri.dataFromString(window.location.href);
-      var uri;
-      Map<String, String> params =
-          uri.queryParameters; // query parameters automatically populated
-      var actionCode = params['oobCode'];
-      var tipo = params['mode'];
-      try {
-        if (actionCode != null && tipo == 'verifyEmail') {
-          await auth.checkActionCode(actionCode).then((value) {
-            auth.currentUser?.reload();
-            changeUserVerificacao();
-            return 'Email validado com Sucesso!';
-          });
-        }
-      } on FirebaseAuthException catch (e) {
-         return ErrorPtBr().verificaCodeErro('auth/' + e.code);
-      }
-    }
   }
 
   @override
@@ -143,41 +122,21 @@ class AuthRepository implements IAuthRepository {
 
   @override
   Future sendChangePasswordEmail(email) {
-    return auth.sendPasswordResetEmail(email: email);
+    var actionCodeSettings = ActionCodeSettings(
+      url: 'https://flutterpadrao.firebaseapp.com/auth/verify',
+      androidPackageName: 'br.flutter_padrao.fl.flutter_padrao',
+      handleCodeInApp: true,
+    );
+    return auth.sendPasswordResetEmail(email: email, actionCodeSettings: actionCodeSettings);
   }
 
   @override
   Future changeResetPassword(password, code) async {
-    if (!kIsWeb) {
-      final PendingDynamicLinkData? data = await fdl.getInitialLink();
-      final Uri? deepLink = data?.link;
-
-      if (deepLink != null) {
-        var actionCode = deepLink.queryParameters['oobCode'];
-        var tipo = deepLink.queryParameters['mode'];
-        try {
-          if (actionCode != null && tipo == 'resetPassword') {
-            await auth.applyActionCode(actionCode).then((value) {
-              auth.currentUser?.reload();
-              return auth.confirmPasswordReset(
-                  code: actionCode, newPassword: password);
-            });
-          }
-        } on FirebaseAuthException catch (e) {
-          return ErrorPtBr().verificaCodeErro('auth/' + e.code);
-        }
-        return 'Código Inválido';
-      }
-    }else{
-      //var uri = Uri.dataFromString(window.location.href);
-      var uri;
-      Map<String, String> params =
-          uri.queryParameters; // query parameters automatically populated
-      auth.confirmPasswordReset(
-          code: code, newPassword: password);
-      getUser().reload();
-
-    }
+      await auth.verifyPasswordResetCode(code).then((value) {
+        auth.currentUser?.reload();
+        return auth.confirmPasswordReset(
+            code: code, newPassword: password);
+      }).catchError((e) => ErrorPtBr().verificaCodeErro('auth/' + e.code));
   }
 
   changeUserVerificacao()
@@ -191,4 +150,23 @@ class AuthRepository implements IAuthRepository {
       "verificado": true
     });
   }
+
+  @override
+  Future<Uri>createDynamicLinks(email, mode) async {
+      int randomAuthCode = Random().nextInt(1000000);
+      final DynamicLinkParameters parameters = DynamicLinkParameters(
+        uriPrefix: "https://flutterpadrao.page.link/emailVerify",
+        link: Uri.parse('https://flutterpadrao.firebaseapp.com/auth/verify?mode=$mode&oobCode=41331432'),
+        androidParameters: AndroidParameters(
+            packageName: "br.flutter_padrao.fl.flutter_padrao",
+            minimumVersion: 1
+        ),
+      );
+      final link = await parameters.buildUrl();
+      final ShortDynamicLink shortenedLink = await DynamicLinkParameters.shortenUrl(
+          link,
+          DynamicLinkParametersOptions(shortDynamicLinkPathLength: ShortDynamicLinkPathLength.unguessable)
+      );
+      return shortenedLink.shortUrl;
+    }
 }

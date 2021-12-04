@@ -32,6 +32,7 @@ abstract class _ForgetStoreBase with Store {
       msgFirebase = 'Senha enviada com sucesso!';
     }).catchError((e) {
       checkError = true;
+      print(e);
       msgFirebase = ErrorPtBr().verificaCodeErro('auth/' + e.code);
     });
 

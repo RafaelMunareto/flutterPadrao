@@ -9,12 +9,21 @@ import 'package:flutter_padrao/app/shared/utils/snackbar_custom.dart';
 import 'package:mobx/mobx.dart';
 
 class ChangePage extends StatefulWidget {
-  const ChangePage({Key? key}) : super(key: key);
+  final String title;
+  final String code;
+  const ChangePage({Key? key, this.title='Trocar senha', this.code=''}) : super(key: key);
   @override
   ChangePageState createState() => ChangePageState();
 }
 class ChangePageState extends State<ChangePage> {
   final ChangeStore store = Modular.get();
+
+  @override
+  void initState()
+  {
+    store.setCode(widget.code);
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
@@ -31,14 +40,15 @@ class ChangePageState extends State<ChangePage> {
               .createSnackBar(store.msgFirebase, Colors.green, context);
         }
       }
-
-      print(store.client.isValidChangePassword);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    var altura = MediaQuery.of(context).size.height * 0.2;
     return Scaffold(
+      appBar: AppBarWidget(
+          title: widget.title, size: altura, context: context, back: true),
       body: LayoutBuilder(builder: (context, constraint) {
         var largura = constraint.maxWidth;
         if (largura < 600) {
@@ -55,7 +65,7 @@ class ChangePageState extends State<ChangePage> {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Center(
-              child: Container(
+              child: SizedBox(
                 width: largura,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

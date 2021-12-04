@@ -68,7 +68,7 @@ class VerifyPageState extends State<VerifyPage> {
         .height * 0.2;
     return Scaffold(
       appBar: AppBarWidget(title: store.tipo != 'verifyEmail' ? 'Trocar Senha': widget.title, size: altura, context: context),
-      body: store.tipo != 'verifyEmail' ? ChangePage() : Center(
+      body: store.tipo != 'verifyEmail' ? const ChangePage() : Center(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Container(
               child: store.msgEmailVerify != 'Email validado com Sucesso!' ? _card('Erro!', Colors.red) : _card('Sucesso!', Colors.green)
