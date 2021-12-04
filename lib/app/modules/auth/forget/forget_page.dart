@@ -10,35 +10,37 @@ import 'package:mobx/mobx.dart';
 
 class ForgetPage extends StatefulWidget {
   final String title;
-  const ForgetPage({Key? key, this.title = 'Esqueceu a senha'}) : super(key: key);
+
+  const ForgetPage({Key? key, this.title = 'Esqueceu a senha'})
+      : super(key: key);
+
   @override
   ForgetPageState createState() => ForgetPageState();
 }
+
 class ForgetPageState extends State<ForgetPage> {
   final ForgetStore store = Modular.get();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    autorun((_) {
-      if (store.checkError) {
-        if (store.msgFirebase != '') {
-          SnackbarCustom()
-              .createSnackBar(store.msgFirebase, Colors.red, context);
+    autorun(
+          (_) {
+        if(store.msg != ''){
+          SnackbarCustom().createSnackBareErrOrGoal(_scaffoldKey, message:store.msg, errOrGoal:store.msgErrOrGoal, rota: '/auth');
+          store.setMsg('');
         }
-      } else {
-        if (store.msgFirebase != '') {
-          SnackbarCustom()
-              .createSnackBar(store.msgFirebase, Colors.green, context);
-        }
-      }
-    });
+      },
+
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     var altura = MediaQuery.of(context).size.height * 0.2;
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBarWidget(
           title: widget.title, size: altura, context: context, back: true),
       body: LayoutBuilder(builder: (context, constraint) {
@@ -57,7 +59,7 @@ class ForgetPageState extends State<ForgetPage> {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Center(
-              child: Container(
+              child: SizedBox(
                 width: largura,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -67,10 +69,13 @@ class ForgetPageState extends State<ForgetPage> {
                         onChanged: store.client.changeEmail,
                         errorText: store.client.validateEmail),
                     const SizedBox(
-                      height: 20,
+                      height: 8,
                     ),
                     Observer(builder: (_) {
-                      return ButtonWidget(label: 'ENVIAR SENHA', function: store.client.isValidEmail ? store.submit : null);
+                      return ButtonWidget(
+                          label: 'ENVIAR SENHA',
+                          loading: store.loading,
+                          function: store.client.isValidEmail ? store.submit : null);
                     }),
                   ],
                 ),

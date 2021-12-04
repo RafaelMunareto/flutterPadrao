@@ -12,10 +12,28 @@ abstract class _VerifyStoreBase with Store {
   AuthController auth = Modular.get();
 
   @observable
-  String msgEmailVerify = '';
+  String tipo = '';
 
   @observable
-  String tipo = '';
+  bool loading = false;
+
+  @observable
+  bool? checkGrupoEmail;
+
+  @observable
+  String msg = '';
+
+  @observable
+  bool msgErrOrGoal = false;
+
+  @action
+  setMsgErrOrGoal(value) => msgErrOrGoal = value;
+
+  @action
+  setLoading(value) => loading = value;
+
+  @action
+  setMsg(value) => msg = value;
 
   @action
   verificaTipo()
@@ -33,10 +51,11 @@ abstract class _VerifyStoreBase with Store {
   @action
   emailVerify()
   {
-    if(tipo == 'verifyEmail')
+    if(tipo == 'verifyEmail') {
       auth.authRepository.emailVerify().then((value) {
-        msgEmailVerify = value ?? 'Código inválido.';
+        setMsg(value ?? 'Código inválido.');
       });
+    }
   }
 
 

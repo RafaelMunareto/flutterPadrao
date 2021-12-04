@@ -24,7 +24,22 @@ abstract class _SignupStoreBase with Store {
   bool? checkGrupoEmail;
 
   @observable
-  String msgFirebase = '';
+  String msg = '';
+
+  @observable
+  bool msgErrOrGoal = false;
+
+  @action
+  setMsgErrOrGoal(value) => msgErrOrGoal = value;
+
+  @action
+  setLoading(value) => loading = value;
+
+  @action
+  setMsg(value) => msg = value;
+
+  @action
+  setCheckGrupoEmail(value) => checkGrupoEmail = value;
 
   @action
   changeEmailGrupo(String value) => client.email = value;
@@ -49,18 +64,21 @@ abstract class _SignupStoreBase with Store {
   @action
   void submit() {
     if (!grupoEmail.contains(client.email.split('@')[1])) {
-      checkGrupoEmail = true;
+      setCheckGrupoEmail(true);
     } else {
-      loading = true;
+     setLoading(true);
       auth.createUserEmailPassword(client.name, client.email, client.password)
           .then((value) {
-        checkGrupoEmail = false;
-        loading = false;
+        setCheckGrupoEmail(false);
+        setMsgErrOrGoal(true);
+        setMsg('E-mail enviado com sucesso!');
+        setLoading(false);
         Modular.to.navigate('/home');
-      }).catchError((error) {
-        checkGrupoEmail = true;
-        msgFirebase = ErrorPtBr().verificaCodeErro('auth/' + error.code);
-        loading = false;
+      }).catchError((e) {
+        setCheckGrupoEmail(true);
+        setMsgErrOrGoal(false);
+        setLoading(false);
+        setMsg(ErrorPtBr().verificaCodeErro('auth/' + e.code));
       });
     }
   }

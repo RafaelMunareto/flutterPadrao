@@ -11,16 +11,20 @@ import 'package:mobx/mobx.dart';
 class ChangePage extends StatefulWidget {
   final String title;
   final String code;
-  const ChangePage({Key? key, this.title='Trocar senha', this.code=''}) : super(key: key);
+
+  const ChangePage({Key? key, this.title = 'Trocar senha', this.code = ''})
+      : super(key: key);
+
   @override
   ChangePageState createState() => ChangePageState();
 }
+
 class ChangePageState extends State<ChangePage> {
   final ChangeStore store = Modular.get();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
-  void initState()
-  {
+  void initState() {
     store.setCode(widget.code);
     super.initState();
   }
@@ -28,25 +32,22 @@ class ChangePageState extends State<ChangePage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    autorun((_) {
-      if (store.checkError) {
-        if (store.msgFirebase != '') {
-          SnackbarCustom()
-              .createSnackBar(store.msgFirebase, Colors.red, context);
+    autorun(
+          (_) {
+        if(store.msg != ''){
+          SnackbarCustom().createSnackBareErrOrGoal(_scaffoldKey, message:store.msg, errOrGoal: store.msgErrOrGoal, rota: '/auth');
+          store.setMsg('');
         }
-      } else {
-        if (store.msgFirebase != '') {
-          SnackbarCustom()
-              .createSnackBar(store.msgFirebase, Colors.green, context);
-        }
-      }
-    });
+      },
+
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     var altura = MediaQuery.of(context).size.height * 0.2;
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBarWidget(
           title: widget.title, size: altura, context: context, back: true),
       body: LayoutBuilder(builder: (context, constraint) {
@@ -87,7 +88,11 @@ class ChangePageState extends State<ChangePage> {
                       height: 20,
                     ),
                     Observer(builder: (_) {
-                      return ButtonWidget(label: 'ALTERAR', function: store.client.isValidChangePassword ? store.submit : null);
+                      return ButtonWidget(
+                          label: 'ALTERA SENHA',
+                          loading: store.loading,
+                          function:
+                          store.client.isValidChangePassword ? store.submit : null);
                     }),
                   ],
                 ),

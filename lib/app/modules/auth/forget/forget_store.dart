@@ -17,25 +17,36 @@ abstract class _ForgetStoreBase with Store {
   bool loading = false;
 
   @observable
-  String msgFirebase = '';
+  bool checkError = false;
 
   @observable
-  bool checkError = false;
+  String msg = '';
+
+  @action
+  setMsg(value) => msg = value;
+
+  @action
+  setLoading(value) => loading = value;
+
+  @observable
+  bool msgErrOrGoal = false;
+
+  @action
+  setMsgErrOrGoal(value) => msgErrOrGoal = value;
 
   @action
   submit()
   {
-    loading = true;
-    auth.sendChangePasswordEmail(client.email).then((value) {
-      loading = false;
-      Modular.to.navigate('/auth');
-      msgFirebase = 'Senha enviada com sucesso!';
+    setLoading(true);
+    auth.sendChangePasswordEmail(client.email).then((value) async {
+       setLoading(false);
+       setMsgErrOrGoal(true);
+       setMsg('Senha enviada com sucesso!');
     }).catchError((e) {
-      checkError = true;
-      print(e);
-      msgFirebase = ErrorPtBr().verificaCodeErro('auth/' + e.code);
+      setLoading(false);
+      setMsgErrOrGoal(false);
+      setMsg(ErrorPtBr().verificaCodeErro('auth/' + e.code));
     });
-
   }
 
 }

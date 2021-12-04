@@ -4,7 +4,6 @@ import 'package:flutter_padrao/app/modules/auth/login/login_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_padrao/app/shared/components/app_bar_widget.dart';
 import 'package:flutter_padrao/app/shared/components/button_widget.dart';
-import 'package:flutter_padrao/app/shared/components/cursor_pointer_widget.dart';
 import 'package:flutter_padrao/app/shared/components/link_rote_widget.dart';
 import 'package:flutter_padrao/app/shared/components/text_field_widget.dart';
 import 'package:flutter_padrao/app/shared/utils/snackbar_custom.dart';
@@ -21,25 +20,30 @@ class LoginPage extends StatefulWidget {
 
 class LoginPageState extends State<LoginPage> {
   final LoginStore store = Modular.get();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    autorun((_) {
-      if (store.msgErro != '') {
-        SnackbarCustom().createSnackBar(store.msgErro, Colors.red, context);
-      }
-    });
+    autorun(
+      (_) {
+        if(store.msg != ''){
+          SnackbarCustom().createSnackBareErrOrGoal(_scaffoldKey, message:store.msg, errOrGoal:false);
+          store.setMsg('');
+        }
+      },
+
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     var altura = MediaQuery.of(context).size.height * 0.2;
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBarWidget(
           title: widget.title, size: altura, context: context, back: false),
       body: LayoutBuilder(builder: (context, constraint) {
-
         var largura = constraint.maxWidth;
 
         if (largura < 600) {
@@ -66,7 +70,7 @@ class LoginPageState extends State<LoginPage> {
                         onChanged: store.client.changeEmail,
                         errorText: store.client.validateEmail),
                     const SizedBox(
-                      height: 20,
+                      height: 8,
                     ),
                     TextFieldWidget(
                         labelText: 'Password',
@@ -76,6 +80,7 @@ class LoginPageState extends State<LoginPage> {
                     Observer(builder: (_) {
                       return ButtonWidget(
                           label: 'LOGIN',
+                          loading: store.loading,
                           function:
                               store.client.isValidLogin ? store.submit : null);
                     }),

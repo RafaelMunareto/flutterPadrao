@@ -4,7 +4,6 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/modules/home/home_store.dart';
 import 'package:flutter_padrao/app/modules/home/models/version_model.dart';
 import 'package:flutter_padrao/app/shared/components/app_bar_widget.dart';
-import 'package:mobx/mobx.dart';
 
 class HomePage extends StatefulWidget {
   final String title;

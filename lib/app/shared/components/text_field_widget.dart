@@ -3,7 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 
 class TextFieldWidget extends StatefulWidget {
   final String labelText;
-  final onChanged;
+  final dynamic onChanged;
   final bool obscure;
   final Function() errorText;
 
@@ -29,7 +29,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget>
     super.initState();
 
     _controller =
-        AnimationController(duration: Duration(seconds: 2), vsync: this);
+        AnimationController(duration: const Duration(seconds: 2), vsync: this);
 
     _animacaoSize = Tween<double>(begin: 0, end: 500).animate(
         CurvedAnimation(parent: _controller, curve: Curves.decelerate));
@@ -51,7 +51,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget>
     return Observer(builder: (_) {
       return Container(
         width: _animacaoSize.value,
-        padding: const EdgeInsets.all(4),
+        padding: const EdgeInsets.all(2),
         // decoration: BoxDecoration(
         //     color: Colors.white,
         //     borderRadius: BorderRadius.circular(20),

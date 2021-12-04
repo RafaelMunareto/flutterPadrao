@@ -1,11 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 
 class ButtonWidget extends StatefulWidget {
   final String label;
-  final function;
+  final dynamic function;
+  final bool loading;
 
-  ButtonWidget({this.label = '', this.function});
+  ButtonWidget(
+      {this.label = '',
+      this.function,
+      this.loading = false});
 
   @override
   _ButtonWidgetState createState() => _ButtonWidgetState();
@@ -24,7 +29,7 @@ class _ButtonWidgetState extends State<ButtonWidget>
     super.initState();
 
     _controller =
-        AnimationController(duration: Duration(seconds: 1), vsync: this);
+        AnimationController(duration: const Duration(seconds: 1), vsync: this);
     _controller.forward();
   }
 
@@ -46,18 +51,18 @@ class _ButtonWidgetState extends State<ButtonWidget>
         CurvedAnimation(parent: _controller, curve: const Interval(0.6, 0.8)));
 
     return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: AnimatedBuilder(
-          animation: this._controller,
-          builder: _buildAnimation,
-        ),
-      );
+      padding: const EdgeInsets.all(8.0),
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: _buildAnimation,
+      ),
+    );
   }
 
   Widget _buildAnimation(BuildContext context, Widget? child) {
     return InkWell(
       child: Padding(
-        padding: const EdgeInsets.only(top: 16),
+        padding: const EdgeInsets.fromLTRB(8,16,8,8),
         child: Container(
           width: largura.value,
           height: altura.value,
@@ -67,15 +72,20 @@ class _ButtonWidgetState extends State<ButtonWidget>
               style: ButtonStyle(
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(radius.value),
-                      )
-                  )
-              ),
+                borderRadius: BorderRadius.circular(radius.value),
+              ))),
               onPressed: widget.function,
-              child: Text(widget.label),
+              child: widget.loading
+                  ? const CircularProgressIndicator(
+                      color: Colors.white,
+                    )
+                  : Text(
+                      widget.label,
+                      style: const TextStyle(color: Colors.white),
+                    ),
             ),
           ),
-          decoration:  BoxDecoration(
+          decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(radius.value),
               gradient: const LinearGradient(colors: [
                 Color.fromRGBO(255, 176, 176, 1),

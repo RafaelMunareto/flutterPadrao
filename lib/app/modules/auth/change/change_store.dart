@@ -19,31 +19,42 @@ abstract class _ChangeStoreBase with Store {
   @observable
   String? code;
 
-  @observable
-  String msgFirebase = '';
-
-  @observable
-  bool checkError = false;
-
   @action
   setCode(value) => code = value;
+
+  @observable
+  String msg = '';
+
+  @action
+  setMsg(value) => msg = value;
+
+  @action
+  setLoading(value) => loading = value;
+
+  @observable
+  bool msgErrOrGoal = false;
+
+  @action
+  setMsgErrOrGoal(value) => msgErrOrGoal = value;
 
 
   @action
   submit()
   {
     if(code != null) {
-      loading = true;
+      setLoading(true);
       auth.changeResetPassword(client.password, code).then((value) {
-        loading = false;
-        msgFirebase = 'Senha alterada com sucesso!';
+        setLoading(false);
+        setMsgErrOrGoal(true);
+        setMsg('Senha alterada com sucesso!');
         Modular.to.navigate('/auth');
       }).catchError((e) {
-        checkError = true;
-        msgFirebase = ErrorPtBr().verificaCodeErro('auth/' + e.code);
+        setMsgErrOrGoal(false);
+        setLoading(false);
+        setMsg(ErrorPtBr().verificaCodeErro('auth/' + e.code));
       });
     }
-
+    setMsg('');
   }
 
 }

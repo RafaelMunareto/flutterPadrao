@@ -5,8 +5,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
   final String title;
   final double size;
-  final context;
-  final controller;
+  final dynamic context;
+  final dynamic controller;
   final User? user;
   final bool settings;
   final bool back;

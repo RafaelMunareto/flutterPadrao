@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
@@ -16,7 +14,8 @@ class AuthRepository implements IAuthRepository {
 
   @override
   Future getEmailPasswordLogin(email, password) async {
-    return auth.signInWithEmailAndPassword(email: email, password: password);
+    return await auth
+        .signInWithEmailAndPassword(email: email, password: password);
   }
 
   @override
@@ -88,24 +87,24 @@ class AuthRepository implements IAuthRepository {
 
   @override
   Future<String?> emailVerify() async {
-      final PendingDynamicLinkData? data = await fdl.getInitialLink();
-      final Uri? deepLink = data?.link;
+    final PendingDynamicLinkData? data = await fdl.getInitialLink();
+    final Uri? deepLink = data?.link;
 
-      if (deepLink != null) {
-        var actionCode = deepLink.queryParameters['oobCode'];
-        var tipo = deepLink.queryParameters['mode'];
-        try {
-          if (actionCode != null && tipo == 'verifyEmail') {
-            await auth.applyActionCode(actionCode).then((value) {
-              auth.currentUser?.reload();
-              changeUserVerificacao();
-              return 'Email validado com Sucesso!';
-            });
-          }
-        } on FirebaseAuthException catch (e) {
-          return ErrorPtBr().verificaCodeErro('auth/' + e.code);
+    if (deepLink != null) {
+      var actionCode = deepLink.queryParameters['oobCode'];
+      var tipo = deepLink.queryParameters['mode'];
+      try {
+        if (actionCode != null && tipo == 'verifyEmail') {
+          await auth.applyActionCode(actionCode).then((value) {
+            auth.currentUser?.reload();
+            changeUserVerificacao();
+            return 'Email validado com Sucesso!';
+          });
         }
+      } on FirebaseAuthException catch (e) {
+        return ErrorPtBr().verificaCodeErro('auth/' + e.code);
       }
+    }
   }
 
   @override
@@ -113,7 +112,8 @@ class AuthRepository implements IAuthRepository {
     return auth
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((firebaseUser) async {
-          firebaseUser.user!.updatePhotoURL('https://firebasestorage.googleapis.com/v0/b/flutterpadrao.appspot.com/o/perfil%2Fbancario1.png?alt=media&token=ff79a9b9-7f1e-4e53-98c7-824324f74935');
+      firebaseUser.user!.updatePhotoURL(
+          'https://firebasestorage.googleapis.com/v0/b/flutterpadrao.appspot.com/o/perfil%2Fbancario1.png?alt=media&token=ff79a9b9-7f1e-4e53-98c7-824324f74935');
       firebaseUser.user!.updateDisplayName(name).then((value) {
         changeUserVerificacao();
       });
@@ -127,46 +127,25 @@ class AuthRepository implements IAuthRepository {
       androidPackageName: 'br.flutter_padrao.fl.flutter_padrao',
       handleCodeInApp: true,
     );
-    return auth.sendPasswordResetEmail(email: email, actionCodeSettings: actionCodeSettings);
+    return auth.sendPasswordResetEmail(
+        email: email, actionCodeSettings: actionCodeSettings);
   }
 
   @override
   Future changeResetPassword(password, code) async {
-      await auth.verifyPasswordResetCode(code).then((value) {
-        auth.currentUser?.reload();
-        return auth.confirmPasswordReset(
-            code: code, newPassword: password);
-      }).catchError((e) => ErrorPtBr().verificaCodeErro('auth/' + e.code));
+    await auth.verifyPasswordResetCode(code).then((value) {
+      auth.currentUser?.reload();
+      return auth.confirmPasswordReset(code: code, newPassword: password);
+    }).catchError((e) => ErrorPtBr().verificaCodeErro('auth/' + e.code));
   }
 
-  changeUserVerificacao()
-  {
-    db.
-    collection('usuarios').doc(getUser().uid).update({
+  changeUserVerificacao() {
+    db.collection('usuarios').doc(getUser().uid).update({
       "name": getUser().displayName,
       "email": getUser().email,
       "urlImage":
-      'https://firebasestorage.googleapis.com/v0/b/flutterpadrao.appspot.com/o/perfil%2Fbancario1.png?alt=media&token=ff79a9b9-7f1e-4e53-98c7-824324f74935',
+          'https://firebasestorage.googleapis.com/v0/b/flutterpadrao.appspot.com/o/perfil%2Fbancario1.png?alt=media&token=ff79a9b9-7f1e-4e53-98c7-824324f74935',
       "verificado": true
     });
   }
-
-  @override
-  Future<Uri>createDynamicLinks(email, mode) async {
-      int randomAuthCode = Random().nextInt(1000000);
-      final DynamicLinkParameters parameters = DynamicLinkParameters(
-        uriPrefix: "https://flutterpadrao.page.link/emailVerify",
-        link: Uri.parse('https://flutterpadrao.firebaseapp.com/auth/verify?mode=$mode&oobCode=41331432'),
-        androidParameters: AndroidParameters(
-            packageName: "br.flutter_padrao.fl.flutter_padrao",
-            minimumVersion: 1
-        ),
-      );
-      final link = await parameters.buildUrl();
-      final ShortDynamicLink shortenedLink = await DynamicLinkParameters.shortenUrl(
-          link,
-          DynamicLinkParametersOptions(shortDynamicLinkPathLength: ShortDynamicLinkPathLength.unguessable)
-      );
-      return shortenedLink.shortUrl;
-    }
 }
