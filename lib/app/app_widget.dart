@@ -24,6 +24,7 @@ class _AppWidgetState extends State<AppWidget> {
 
   @override
   initState() {
+    changeThemeStorage();
     initDynamicLinks();
     super.initState();
   }
@@ -46,20 +47,16 @@ class _AppWidgetState extends State<AppWidget> {
     });
   }
 
+  void changeThemeStorage() async {
+    await theme.get('theme').then((value) {
+        setState(() {
+          value?[0] == 'dark' ? _themeMode = ThemeMode.dark :  _themeMode = ThemeMode.light;
+        });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-
-    theme.get('theme').then((value) {
-      if(value != null){
-        darkLight = value[0];
-      }else{
-        darkLight = 'light';
-      }
-    }).then((value) {
-      darkLight == 'light' ? _themeMode = ThemeMode.light :  _themeMode = ThemeMode.dark;
-    });
-
     return MaterialApp(
       title: 'Flutter Padrão',
       debugShowCheckedModeBanner: false,

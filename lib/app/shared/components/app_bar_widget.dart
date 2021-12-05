@@ -7,7 +7,7 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
   final double size;
   final dynamic context;
   final dynamic controller;
-  final User? user;
+  final dynamic user;
   final bool settings;
   final bool back;
   final String rota;
@@ -18,7 +18,7 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
       this.size = 200,
       this.context,
       this.controller,
-      this.user,
+      this.user='',
       this.settings = false,
       this.back = true,
       this.rota = '/auth'})
@@ -53,11 +53,11 @@ class AppBarWidget extends StatelessWidget with PreferredSizeWidget {
       icon: const Icon(Icons.more_vert),
       itemBuilder: (BuildContext context) => <PopupMenuEntry>[
        PopupMenuItem(
-          child:   user != null ? InputChip(
+          child:   user != '' ? InputChip(
             avatar: CircleAvatar(
-              backgroundImage: NetworkImage(user!.photoURL.toString()),
+              backgroundImage: NetworkImage(user.photoURL.toString()),
             ),
-            label: Text(user!.displayName ?? ''),
+            label: Text(user.displayName),
           ) : Container(),
         ),
         PopupMenuItem(

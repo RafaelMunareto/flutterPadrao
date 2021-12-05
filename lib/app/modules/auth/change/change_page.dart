@@ -72,18 +72,18 @@ class ChangePageState extends State<ChangePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     TextFieldWidget(
-                        labelText: 'Password',
+                        labelText: 'Senha',
                         obscure: true,
                         onChanged: store.client.changePassword,
                         errorText: store.client.validatePassword),
                     TextFieldWidget(
-                        labelText: 'confirmPassword',
+                        labelText: 'Confirma a senha',
                         obscure: true,
                         onChanged: store.client.changeConfirmPassword,
                         errorText: store.client.validateConfirmPassword),
                     Observer(builder: (_) {
                       return ButtonWidget(
-                          label: 'ALTERA SENHA',
+                          label: 'ALTERAR',
                           loading: store.loading,
                           function:
                           store.client.isValidChangePassword ? store.submit : null);

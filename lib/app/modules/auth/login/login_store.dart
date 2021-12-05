@@ -37,10 +37,13 @@ abstract class _LoginStoreBase with Store {
       if(value.user.emailVerified){
         Modular.to.navigate('/home');
       }
-     setLoading(false);
-    }).catchError((e) {
-      setMsg(ErrorPtBr().verificaCodeErro('auth/' + e.code));
       setLoading(false);
+      setErrOrGoal(false);
+      setMsg('Você deve validar o email primeiro!');
+    }).catchError((e) {
+      setLoading(false);
+      setErrOrGoal(false);
+      setMsg(ErrorPtBr().verificaCodeErro('auth/' + e.code));
     });
   }
 

@@ -28,7 +28,7 @@ class LoginPageState extends State<LoginPage> {
     autorun(
       (_) {
         if(store.msg != ''){
-          SnackbarCustom().createSnackBareErrOrGoal(_scaffoldKey, message:store.msg, errOrGoal:false);
+          SnackbarCustom().createSnackBareErrOrGoal(_scaffoldKey, message:store.msg, errOrGoal:store.errOrGoal);
           store.setMsg('');
         }
       },
@@ -66,11 +66,11 @@ class LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     TextFieldWidget(
-                        labelText: 'email',
+                        labelText: 'E-mail',
                         onChanged: store.client.changeEmail,
                         errorText: store.client.validateEmail),
                     TextFieldWidget(
-                        labelText: 'Password',
+                        labelText: 'Senha',
                         obscure: true,
                         onChanged: store.client.changePassword,
                         errorText: store.client.validatePassword),
