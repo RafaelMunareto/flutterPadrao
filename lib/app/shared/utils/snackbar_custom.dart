@@ -15,7 +15,7 @@ class SnackbarCustom  {
       if(errOrGoal) {
         final snackbar = SnackBar(content: Text(message), duration:  Duration(seconds:time), backgroundColor: Colors.green);
         scaffoldKey.currentState.showSnackBar(snackbar);
-        Timer(const Duration(seconds: 2), () => Modular.to.navigate(rota));
+        Timer(Duration(seconds: time), () => Modular.to.navigate(rota));
       }else{
         final snackbar = SnackBar(content: Text(message), duration:  Duration(seconds:time), backgroundColor: Colors.red);
         scaffoldKey.currentState.showSnackBar(snackbar);

@@ -47,7 +47,8 @@ class AuthRepository implements IAuthRepository {
 
   @override
   getUser() {
-    return auth.currentUser;
+     User? user = FirebaseAuth.instance.currentUser;
+     return user;
   }
 
   @override
@@ -62,10 +63,11 @@ class AuthRepository implements IAuthRepository {
         .then((firebaseUser) async {
       User? user = FirebaseAuth.instance.currentUser;
       var actionCodeSettings = ActionCodeSettings(
-        url: 'https://flutterpadrao.firebaseapp.com',
+        url: 'https://flutterpadrao.firebaseapp.com/auth/verify',
+        androidPackageName: 'br.flutter_padrao.fl.flutter_padrao',
         handleCodeInApp: true,
       );
-      if (user != null && !user.emailVerified) {
+      if (user != null && !getUser().emailVerified) {
         await user.sendEmailVerification(actionCodeSettings);
       }
       firebaseUser.user!.updateDisplayName(name).then((value) {
@@ -86,25 +88,15 @@ class AuthRepository implements IAuthRepository {
   }
 
   @override
-  Future<String?> emailVerify() async {
-    final PendingDynamicLinkData? data = await fdl.getInitialLink();
-    final Uri? deepLink = data?.link;
-
-    if (deepLink != null) {
-      var actionCode = deepLink.queryParameters['oobCode'];
-      var tipo = deepLink.queryParameters['mode'];
-      try {
-        if (actionCode != null && tipo == 'verifyEmail') {
-          await auth.applyActionCode(actionCode).then((value) {
-            auth.currentUser?.reload();
-            changeUserVerificacao();
-            return 'Email validado com Sucesso!';
-          });
-        }
-      } on FirebaseAuthException catch (e) {
-        return ErrorPtBr().verificaCodeErro('auth/' + e.code);
-      }
-    }
+  Future emailVerify(code) async {
+    await auth.checkActionCode(code);
+    await auth.applyActionCode(code);
+    getUser().reload();
+    User? user = FirebaseAuth.instance.currentUser;
+    return  user;
+    db.collection('usuarios').doc(getUser().uid).update({
+      "verificado": true
+    });
   }
 
   @override
@@ -133,10 +125,13 @@ class AuthRepository implements IAuthRepository {
 
   @override
   Future changeResetPassword(password, code) async {
-    await auth.verifyPasswordResetCode(code).then((value) {
-      auth.currentUser?.reload();
-      return auth.confirmPasswordReset(code: code, newPassword: password);
-    }).catchError((e) => ErrorPtBr().verificaCodeErro('auth/' + e.code));
+    try{
+      await auth.verifyPasswordResetCode(code).then((value) {
+        auth.currentUser?.reload();
+        return auth.confirmPasswordReset(code: code, newPassword: password); });
+    }on FirebaseAuthException catch (e) {
+      return ErrorPtBr().verificaCodeErro('auth/' + e.code);
+    }
   }
 
   changeUserVerificacao() {
@@ -148,4 +143,5 @@ class AuthRepository implements IAuthRepository {
       "verificado": true
     });
   }
+
 }

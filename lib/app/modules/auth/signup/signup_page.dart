@@ -20,19 +20,19 @@ class SignupPage extends StatefulWidget {
 
 class SignupPageState extends State<SignupPage> {
   final SignupStore store = Modular.get();
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     autorun(
-          (_) {
-        if(store.msg != ''){
-          SnackbarCustom().createSnackBareErrOrGoal(_scaffoldKey, errOrGoal: store.msgErrOrGoal ,message:store.msg, rota: '/home');
+      (_) {
+        if (store.msg != '') {
+          SnackbarCustom().createSnackBareErrOrGoal(_scaffoldKey,
+              errOrGoal: store.msgErrOrGoal, message: store.msg, rota: '/auth');
           store.setMsg('');
         }
       },
-
     );
   }
 
@@ -69,29 +69,20 @@ class SignupPageState extends State<SignupPage> {
                 child: Column(
                   children: [
                     TextFieldWidget(
-                        labelText: 'name',
+                        labelText: 'Nome',
                         onChanged: store.client.changeName,
                         errorText: store.client.validateName),
-                    const SizedBox(
-                      height: 20,
-                    ),
                     TextFieldWidget(
-                        labelText: 'email',
+                        labelText: 'E-mail',
                         onChanged: store.changeEmailGrupo,
                         errorText: store.validateEmailGrupo),
-                    const SizedBox(
-                      height: 20,
-                    ),
                     TextFieldWidget(
-                        labelText: 'Password',
+                        labelText: 'Senha',
                         obscure: true,
                         onChanged: store.client.changePassword,
                         errorText: store.client.validatePassword),
-                    const SizedBox(
-                      height: 20,
-                    ),
                     TextFieldWidget(
-                        labelText: 'Confirm Password',
+                        labelText: 'Confirmação de senha',
                         obscure: true,
                         onChanged: store.client.changeConfirmPassword,
                         errorText: store.client.validateConfirmPassword),
@@ -99,8 +90,9 @@ class SignupPageState extends State<SignupPage> {
                       return ButtonWidget(
                           label: 'CADASTRAR',
                           loading: store.loading,
-                          function:store.isValidRegisterEmailGrupo ? store.submit : null
-                      );
+                          function: store.isValidRegisterEmailGrupo
+                              ? store.submit
+                              : null);
                     }),
                     const LinkRoteWidget(
                         label: 'Já possui cadastro? ',

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/shared/repositories/localstorage/local_storage_interface.dart';
 import 'package:flutter_padrao/app/shared/repositories/localstorage/local_storage_share.dart';
+import 'package:flutter_padrao/app/shared/utils/snackbar_custom.dart';
 import 'package:flutter_padrao/app/shared/utils/themes/theme.dart';
 
 class AppWidget extends StatefulWidget {
@@ -34,14 +35,14 @@ class _AppWidgetState extends State<AppWidget> {
           if (deepLink != null) {
             var actionCode = deepLink.queryParameters['oobCode'];
             var tipo = deepLink.queryParameters['mode'];
-            if(tipo == 'emailVerify'){
-              Modular.to.navigate('/auth/verify');
+            if(tipo == 'verifyEmail'){
+              Modular.to.navigate('/auth/verify/$actionCode');
             }else if(tipo == 'resetPassword'){
               Modular.to.navigate('/auth/change/$actionCode');
             }
           }
         }, onError: (OnLinkErrorException e) async {
-            print(e.message);
+            SnackbarCustom().createSnackBarErrorFirebase(e.message, Colors.red, context);
     });
   }
 

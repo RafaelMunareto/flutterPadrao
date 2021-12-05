@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 class ButtonWidget extends StatefulWidget {
@@ -7,10 +5,8 @@ class ButtonWidget extends StatefulWidget {
   final dynamic function;
   final bool loading;
 
-  ButtonWidget(
-      {this.label = '',
-      this.function,
-      this.loading = false});
+  const ButtonWidget(
+      {Key? key, this.label = '', this.function, this.loading = false})  : super(key: key);
 
   @override
   _ButtonWidgetState createState() => _ButtonWidgetState();
@@ -62,7 +58,7 @@ class _ButtonWidgetState extends State<ButtonWidget>
   Widget _buildAnimation(BuildContext context, Widget? child) {
     return InkWell(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(8,16,8,8),
+        padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
         child: Container(
           width: largura.value,
           height: altura.value,

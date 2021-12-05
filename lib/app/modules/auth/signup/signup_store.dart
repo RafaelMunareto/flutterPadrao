@@ -66,14 +66,14 @@ abstract class _SignupStoreBase with Store {
     if (!grupoEmail.contains(client.email.split('@')[1])) {
       setCheckGrupoEmail(true);
     } else {
-     setLoading(true);
-      auth.createUserEmailPassword(client.name, client.email, client.password)
+      setLoading(true);
+      auth
+          .createUserLinkEmail(client.name, client.email, client.password)
           .then((value) {
         setCheckGrupoEmail(false);
         setMsgErrOrGoal(true);
         setMsg('E-mail enviado com sucesso!');
         setLoading(false);
-        Modular.to.navigate('/home');
       }).catchError((e) {
         setCheckGrupoEmail(true);
         setMsgErrOrGoal(false);
@@ -93,5 +93,4 @@ abstract class _SignupStoreBase with Store {
     }
     return null;
   }
-
 }

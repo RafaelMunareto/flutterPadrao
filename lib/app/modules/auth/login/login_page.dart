@@ -20,7 +20,7 @@ class LoginPage extends StatefulWidget {
 
 class LoginPageState extends State<LoginPage> {
   final LoginStore store = Modular.get();
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void didChangeDependencies() {
@@ -69,9 +69,6 @@ class LoginPageState extends State<LoginPage> {
                         labelText: 'email',
                         onChanged: store.client.changeEmail,
                         errorText: store.client.validateEmail),
-                    const SizedBox(
-                      height: 8,
-                    ),
                     TextFieldWidget(
                         labelText: 'Password',
                         obscure: true,

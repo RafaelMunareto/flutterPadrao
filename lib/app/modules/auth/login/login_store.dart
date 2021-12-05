@@ -2,7 +2,6 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/modules/auth/shared/models/client_store.dart';
 import 'package:flutter_padrao/app/shared/auth/auth_controller.dart';
 import 'package:flutter_padrao/app/shared/utils/error_pt_br.dart';
-import 'package:flutter_padrao/app/shared/utils/snackbar_custom.dart';
 import 'package:mobx/mobx.dart';
 
 part 'login_store.g.dart';
@@ -18,6 +17,12 @@ abstract class _LoginStoreBase with Store {
   @observable
   String msg = '';
 
+  @observable
+  bool errOrGoal = false;
+
+  @action
+  setErrOrGoal(value) => errOrGoal = value;
+
   @action
   setMsg(value) => msg = value;
 
@@ -25,12 +30,14 @@ abstract class _LoginStoreBase with Store {
   setLoading(value) => loading = value;
 
   @action
-  submit()
+  submit() async
   {
     setLoading(true);
     auth.getEmailPasswordLogin(client.email, client.password).then((value) {
-      setLoading(false);
-      Modular.to.navigate('/home');
+      if(value.user.emailVerified){
+        Modular.to.navigate('/home');
+      }
+     setLoading(false);
     }).catchError((e) {
       setMsg(ErrorPtBr().verificaCodeErro('auth/' + e.code));
       setLoading(false);

@@ -69,9 +69,9 @@ abstract class _AuthControllerBase with Store {
   }
 
   @action
-  Future<String?> emailVerify()
+  Future emailVerify(code)
   {
-    return authRepository.emailVerify();
+    return authRepository.emailVerify(code);
   }
 
   @action

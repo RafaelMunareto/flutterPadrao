@@ -21,7 +21,7 @@ class ChangePage extends StatefulWidget {
 
 class ChangePageState extends State<ChangePage> {
   final ChangeStore store = Modular.get();
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -76,17 +76,11 @@ class ChangePageState extends State<ChangePage> {
                         obscure: true,
                         onChanged: store.client.changePassword,
                         errorText: store.client.validatePassword),
-                    const SizedBox(
-                      height: 20,
-                    ),
                     TextFieldWidget(
                         labelText: 'confirmPassword',
                         obscure: true,
                         onChanged: store.client.changeConfirmPassword,
                         errorText: store.client.validateConfirmPassword),
-                    const SizedBox(
-                      height: 20,
-                    ),
                     Observer(builder: (_) {
                       return ButtonWidget(
                           label: 'ALTERA SENHA',

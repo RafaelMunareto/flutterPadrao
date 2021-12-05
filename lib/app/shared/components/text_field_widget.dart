@@ -5,7 +5,7 @@ class TextFieldWidget extends StatefulWidget {
   final String labelText;
   final dynamic onChanged;
   final bool obscure;
-  final Function() errorText;
+  final dynamic errorText;
 
   const TextFieldWidget(
       {Key? key,
@@ -59,13 +59,16 @@ class _TextFieldWidgetState extends State<TextFieldWidget>
         //       BoxShadow(
         //           color: Colors.grey.shade200, blurRadius: 15, spreadRadius: 4)
         //     ]),
-        child: TextField(
-          onChanged: widget.onChanged,
-          obscureText: widget.obscure,
-          decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            labelText: widget.labelText,
-            errorText: widget.errorText == null ? null : widget.errorText(),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: TextField(
+            onChanged: widget.onChanged,
+            obscureText: widget.obscure,
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(),
+              labelText: widget.labelText,
+              errorText: widget.errorText == null ? null : widget.errorText(),
+            ),
           ),
         ),
       );

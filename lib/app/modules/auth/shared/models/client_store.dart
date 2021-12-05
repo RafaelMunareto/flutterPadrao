@@ -3,8 +3,8 @@ import 'package:mobx/mobx.dart';
 part 'client_store.g.dart';
 
 class ClientStore = _ClientStoreBase with _$ClientStore;
-abstract class _ClientStoreBase with Store {
 
+abstract class _ClientStoreBase with Store {
   @observable
   String name = '';
 
@@ -29,29 +29,22 @@ abstract class _ClientStoreBase with Store {
   @action
   changeConfirmPassword(String value) => confirmPassword = value;
 
-
   @computed
   bool get isValidLogin {
-    return
-          validateEmail() == null
-          && validatePassword() == null;
+    return validateEmail() == null && validatePassword() == null;
   }
 
   @computed
   bool get isValidChangePassword {
-    return
-      validateConfirmPassword() == null
-          && validatePassword() == null;
+    return validateConfirmPassword() == null && validatePassword() == null;
   }
-
 
   @computed
   bool get isValidEmail {
-    return
-      validateEmail() == null;
+    return validateEmail() == null;
   }
 
-  String? validateName(){
+  String? validateName() {
     if (name.isEmpty) {
       return 'Campo obrigatório';
     } else if (name.length < 3) {
@@ -60,16 +53,18 @@ abstract class _ClientStoreBase with Store {
     return null;
   }
 
-  String? validateEmail(){
+  String? validateEmail() {
     if (email.isEmpty) {
       return 'Campo obrigatório';
-    } else if (!email.contains('@')) {
+    } else if (!RegExp(
+            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+        .hasMatch(email)) {
       return 'Email inválido';
     }
     return null;
   }
 
-  String? validatePassword(){
+  String? validatePassword() {
     if (password.isEmpty) {
       return 'Campo obrigatório';
     } else if (password.length < 6) {
@@ -78,7 +73,7 @@ abstract class _ClientStoreBase with Store {
     return null;
   }
 
-  String? validateConfirmPassword(){
+  String? validateConfirmPassword() {
     if (password != confirmPassword) {
       return 'As senhas devem ser iguais.';
     } else if (confirmPassword.isEmpty) {
@@ -88,6 +83,4 @@ abstract class _ClientStoreBase with Store {
     }
     return null;
   }
-
-
 }
