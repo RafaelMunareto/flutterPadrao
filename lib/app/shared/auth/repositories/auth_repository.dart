@@ -94,11 +94,11 @@ class AuthRepository implements IAuthRepository {
     await auth.checkActionCode(code);
     await auth.applyActionCode(code);
     getUser().reload();
-    User? user = FirebaseAuth.instance.currentUser;
-    return  user;
     db.collection('usuarios').doc(getUser().uid).update({
       "verificado": true
     });
+    User? user = FirebaseAuth.instance.currentUser;
+    return  user;
   }
 
   @override
