@@ -75,11 +75,13 @@ abstract class _AuthControllerBase with Store {
   }
 
   @action
-  usuarioLogado()
+  usuarioNaoLogado()
   {
+    setUser(authRepository.getUser());
     if(user == null){
-      Modular.to.navigate('/auth');
+     return Modular.to.navigate('/auth/');
     }
+    return false;
   }
 
 }

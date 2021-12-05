@@ -4,6 +4,7 @@ import 'package:flutter_padrao/app/modules/home/repositories/version_repository.
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/modules/home/services/interfaces/version_service_interface.dart';
 import 'package:flutter_padrao/app/modules/home/services/version_service.dart';
+import 'package:flutter_padrao/app/shared/auth/repositories/guard.dart';
 import '../home/home_store.dart';
 
 import 'home_page.dart';
@@ -18,6 +19,6 @@ class HomeModule extends Module {
 
   @override
   final List<ModularRoute> routes = [
-    ChildRoute('/', child:  (context, args) => const HomePage()),
+    ChildRoute('/', child:  (context, args) => const HomePage(), guards: [AuthGuard()]),
   ];
 }

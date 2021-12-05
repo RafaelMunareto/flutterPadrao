@@ -18,12 +18,6 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
   final HomeStore store = Modular.get();
 
   @override
-  void initState() {
-    store.auth.usuarioLogado();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     var altura = MediaQuery.of(context).size.height * 0.2;
     return Scaffold(
