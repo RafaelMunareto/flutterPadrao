@@ -10,6 +10,7 @@ import 'package:flutter_padrao/app/shared/auth/repositories/auth_repository.dart
 import 'package:flutter_padrao/app/shared/auth/repositories/auth_repository_interface.dart';
 import 'package:flutter_padrao/app/shared/repositories/localstorage/local_storage_interface.dart';
 import 'package:flutter_padrao/app/shared/repositories/localstorage/local_storage_share.dart';
+import 'package:flutter_padrao/app/shared/utils/splash_widget.dart';
 import 'package:flutter_padrao/app/shared/utils/themes/theme_preferences.dart';
 
 import 'modules/home/home_module.dart';
@@ -29,14 +30,10 @@ class AppModule extends Module {
 
   @override
   final List<ModularRoute> routes = [
+    ChildRoute('/', child:  (context, args) => const SplashWidget()),
     ModuleRoute('/auth', module: AuthModule(), transition: TransitionType.leftToRightWithFade),
     ModuleRoute('/home', module: HomeModule(), transition: TransitionType.leftToRightWithFade),
     ModuleRoute('/settings', module: SettingsModule(), transition: TransitionType.leftToRightWithFade),
-    WildcardRoute(
-      child: (_, __) => const Scaffold(
-        body: Center(child: Text('Pagina não existe')),
-      ),
-    )
   ];
 
 }
