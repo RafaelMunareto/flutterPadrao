@@ -1,17 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/modules/auth/auth_module.dart';
 import 'package:flutter_padrao/app/modules/settings/settings_module.dart';
 import 'package:flutter_padrao/app/shared/auth/auth_controller.dart';
 import 'package:flutter_padrao/app/shared/auth/repositories/auth_repository.dart';
 import 'package:flutter_padrao/app/shared/auth/repositories/auth_repository_interface.dart';
+import 'package:flutter_padrao/app/shared/auth/repositories/biometric_repository.dart';
+import 'package:flutter_padrao/app/shared/auth/repositories/biometric_repository_interface.dart';
 import 'package:flutter_padrao/app/shared/repositories/localstorage/local_storage_interface.dart';
 import 'package:flutter_padrao/app/shared/repositories/localstorage/local_storage_share.dart';
 import 'package:flutter_padrao/app/shared/utils/splash_widget.dart';
 import 'package:flutter_padrao/app/shared/utils/themes/theme_preferences.dart';
+import 'package:local_auth/local_auth.dart';
 
 import 'modules/home/home_module.dart';
 
@@ -22,9 +24,11 @@ class AppModule extends Module {
     Bind.instance<FirebaseFirestore>(FirebaseFirestore.instance),
     Bind.instance<FirebaseAuth>(FirebaseAuth.instance),
     Bind.instance<FirebaseDynamicLinks>(FirebaseDynamicLinks.instance),
+    Bind.instance<LocalAuthentication>(LocalAuthentication()),
     Bind.singleton<ThemePreferences>((i) => ThemePreferences()),
     Bind.singleton<IAuthRepository>((i) => AuthRepository()),
-    Bind.singleton<AuthController>((i) => AuthController(authRepository: i.get())),
+    Bind.singleton<IBiometricRepository>((i) => BiometricRepository()),
+    Bind.singleton<AuthController>((i) => AuthController(authRepository: i.get(), biometricRepository:  i.get())),
 
   ];
 

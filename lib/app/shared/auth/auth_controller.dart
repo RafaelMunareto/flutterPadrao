@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/shared/auth/repositories/auth_repository_interface.dart';
+import 'package:flutter_padrao/app/shared/auth/repositories/biometric_repository_interface.dart';
 import 'package:mobx/mobx.dart';
 part 'auth_controller.g.dart';
 
@@ -8,6 +9,7 @@ class AuthController = _AuthControllerBase with _$AuthController;
 
 abstract class _AuthControllerBase with Store {
   final IAuthRepository authRepository;
+  final IBiometricRepository biometricRepository;
 
   @observable
   AuthStatus status = AuthStatus.loading;
@@ -15,7 +17,7 @@ abstract class _AuthControllerBase with Store {
   @observable
   User? user;
 
-  _AuthControllerBase({required this.authRepository}){
+  _AuthControllerBase({required this.authRepository, required this.biometricRepository}){
    setUser(authRepository.getUser());
   }
 
@@ -74,6 +76,7 @@ abstract class _AuthControllerBase with Store {
     return authRepository.emailVerify(code);
   }
 
+  //controle de acesso
   @action
   usuarioNaoLogado()
   {
@@ -82,6 +85,33 @@ abstract class _AuthControllerBase with Store {
      return Modular.to.navigate('/auth/');
     }
     return false;
+  }
+
+  //biometric
+  @action
+  Future checkBiometrics()
+  {
+    return biometricRepository.checkBiometrics();
+  }
+  @action
+  Future getAvailableBiometrics()
+  {
+    return biometricRepository.getAvailableBiometrics();
+  }
+  @action
+  Future<void> authenticate(String _authorized, bool _isAuthenticating)
+  {
+    return biometricRepository.authenticate(_authorized,_isAuthenticating);
+  }
+  @action
+  Future<void> authenticateWithBiometrics(String _authorized, bool _isAuthenticating)
+  {
+    return biometricRepository.authenticateWithBiometrics(_authorized, _isAuthenticating);
+  }
+  @action
+  cancelAuthentication()
+  {
+    return biometricRepository.cancelAuthentication();
   }
 
 }

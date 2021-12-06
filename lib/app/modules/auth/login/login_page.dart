@@ -27,13 +27,20 @@ class LoginPageState extends State<LoginPage> {
     super.didChangeDependencies();
     autorun(
       (_) {
-        if(store.msg != ''){
-          SnackbarCustom().createSnackBareErrOrGoal(_scaffoldKey, message:store.msg, errOrGoal:store.errOrGoal);
+        if (store.msg != '') {
+          SnackbarCustom().createSnackBareErrOrGoal(_scaffoldKey,
+              message: store.msg, errOrGoal: store.errOrGoal);
           store.setMsg('');
         }
       },
-
     );
+  }
+
+  @override
+  void initState() {
+    store.checkSupportDevice();
+    super.initState();
+
   }
 
   @override
@@ -86,7 +93,26 @@ class LoginPageState extends State<LoginPage> {
                     const LinkRoteWidget(
                         label: 'Não possui cadastro? ',
                         labelBold: 'Registre-se',
-                        rota: '/auth/signup')
+                        rota: '/auth/signup'),
+                    Observer(builder: (_) {
+                      return Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: store.supportState == SupportState.supported
+                              ? GestureDetector(
+                                  onTap: store.authenticateWithBiometrics,
+                                  child: SizedBox(
+                                    width: 92,
+                                    child: store.faceOrFinger
+                                        ? const Image(
+                                            image: AssetImage(
+                                                'assets/img/face.png'))
+                                        : const Image(
+                                            image: AssetImage(
+                                                'assets/img/digital.png')),
+                                  ),
+                                )
+                              : Container());
+                    })
                   ],
                 ),
               ),

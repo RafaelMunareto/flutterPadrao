@@ -52,6 +52,8 @@ flutter:
   assets:
     - assets/img/splash_light.png
     - assets/img/splash_dark.png
+    - assets/img/digital.png
+    - assets/img/face.png
     - assets/icon/icon_padrao.png
 
 scripts:
