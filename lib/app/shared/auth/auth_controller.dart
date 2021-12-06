@@ -98,15 +98,11 @@ abstract class _AuthControllerBase with Store {
   {
     return biometricRepository.getAvailableBiometrics();
   }
+
   @action
-  Future<void> authenticate(String _authorized, bool _isAuthenticating)
+  Future<String> authenticateWithBiometrics(bool faceOrFinger)
   {
-    return biometricRepository.authenticate(_authorized,_isAuthenticating);
-  }
-  @action
-  Future<void> authenticateWithBiometrics(String _authorized, bool _isAuthenticating)
-  {
-    return biometricRepository.authenticateWithBiometrics(_authorized, _isAuthenticating);
+    return biometricRepository.authenticateWithBiometrics(faceOrFinger);
   }
   @action
   cancelAuthentication()

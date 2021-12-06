@@ -58,23 +58,6 @@ abstract class _LoginStoreBase with Store {
   @observable
   bool isAuthenticating = false;
 
-  authenticate(email, password)
-  {
-    setLoading(true);
-    auth.getEmailPasswordLogin(email, password).then((value) {
-      if (value.user.emailVerified) {
-        Modular.to.navigate('/home');
-      }
-      setLoading(false);
-      setErrOrGoal(false);
-      setMsg('Você deve validar o email primeiro!');
-    }).catchError((e) {
-      setLoading(false);
-      setErrOrGoal(false);
-      setMsg(ErrorPtBr().verificaCodeErro('auth/' + e.code));
-    });
-  }
-
   @action
   submit() async {
     setLoading(true);
@@ -93,6 +76,7 @@ abstract class _LoginStoreBase with Store {
     });
   }
 
+  //gooole
   @action
   loginWithGoogle() async {
     try {
@@ -125,39 +109,27 @@ abstract class _LoginStoreBase with Store {
   }
 
   @action
-  authenticateWithBiometrics() async {
-    if (canCheckBiometrics) {
-      bool authenticated = false;
-      try {
-        isAuthenticating = true;
-        authorized = 'Autenticado';
-        authenticated = await bio.authenticate(
-            localizedReason:
-                faceOrFinger ? 'Aponte para seu rosto' : 'Coloque sua digital',
-            useErrorDialogs: true,
-            androidAuthStrings: const AndroidAuthMessages(
-              cancelButton: 'Cancelar',
-              signInTitle: 'Requer autenticação',
-              biometricHint: 'Verifica identidade',
-            ),
-            stickyAuth: true,
-            biometricOnly: true);
-        isAuthenticating = false;
-        authorized = 'Autenticando';
-      } on PlatformException catch (e) {
-        //print(e);
-        isAuthenticating = false;
-        authorized = "Error - ${e.message}";
-        return;
+  authenticateBiometric()
+  {
+    auth.authenticateWithBiometrics(faceOrFinger).then((value) {
+      if(value == 'Authorized'){
+        setLoading(true);
+        auth.getEmailPasswordLogin(loginStorage![0], loginStorage![1]).then((value) {
+          if (value.user.emailVerified) {
+            Modular.to.navigate('/home');
+          }
+          setLoading(false);
+          setErrOrGoal(false);
+          setMsg('Você deve validar o email primeiro!');
+        }).catchError((e) {
+          setLoading(false);
+          setErrOrGoal(false);
+          setMsg(ErrorPtBr().verificaCodeErro('auth/' + e.code));
+        });
       }
-      final String message = authenticated ? 'Authorized' : 'Not Authorized';
-      authorized = message;
-    }
-
-    if(authorized == 'Authorized'){
-       authenticate(loginStorage![0], loginStorage![1]);
-    }
+    });
   }
+
 
   @computed
   get login {

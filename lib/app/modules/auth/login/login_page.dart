@@ -99,7 +99,7 @@ class LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.only(top: 8.0),
                           child: store.supportState == SupportState.supported
                               ? GestureDetector(
-                                  onTap: store.authenticateWithBiometrics,
+                                  onTap: store.authenticateBiometric,
                                   child: SizedBox(
                                     width: 92,
                                     child: store.faceOrFinger

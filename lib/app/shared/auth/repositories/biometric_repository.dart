@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/shared/auth/repositories/biometric_repository_interface.dart';
+import 'package:local_auth/auth_strings.dart';
 import 'package:local_auth/local_auth.dart';
 
 class BiometricRepository implements IBiometricRepository {
@@ -26,26 +27,32 @@ class BiometricRepository implements IBiometricRepository {
   }
 
   @override
-  Future<void> authenticateWithBiometrics(String _authorized, bool _isAuthenticating) async {
+  Future<String> authenticateWithBiometrics(faceOrFinger) async {
+    String authorized = '';
     bool authenticated = false;
     try {
-      _isAuthenticating = true;
-      _authorized = 'Authenticating';
+
       authenticated = await auth.authenticate(
           localizedReason:
-          'Scan your fingerprint (or face or whatever) to authenticate',
+          faceOrFinger ? 'Aponte para seu rosto' : 'Coloque sua digital',
           useErrorDialogs: true,
+          androidAuthStrings: const AndroidAuthMessages(
+            cancelButton: 'Cancelar',
+            signInTitle: 'Requer autenticação',
+            biometricHint: 'Verifica identidade',
+          ),
           stickyAuth: true,
           biometricOnly: true);
-        _isAuthenticating = false;
-        _authorized = 'Authenticating';
+
     } on PlatformException catch (e) {
-        _isAuthenticating = false;
-        _authorized = "Error - ${e.message}";
-      return;
+      //print(e);
+      authorized = "Error - ${e.message}";
+      return authorized;
     }
     final String message = authenticated ? 'Authorized' : 'Not Authorized';
-    _authorized = message;
+    authorized = message;
+
+    return authorized;
   }
 
   @override
