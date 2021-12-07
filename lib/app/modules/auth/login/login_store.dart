@@ -25,6 +25,9 @@ abstract class _LoginStoreBase with Store {
   bool loading = false;
 
   @observable
+  bool loadingGoogle = false;
+
+  @observable
   String msg = '';
 
   @observable
@@ -44,6 +47,9 @@ abstract class _LoginStoreBase with Store {
 
   @action
   setLoading(value) => loading = value;
+
+  @action
+  setLoadingGoogle(value) => loadingGoogle = value;
 
   //biometric
   @observable
@@ -79,14 +85,14 @@ abstract class _LoginStoreBase with Store {
   //gooole
   @action
   loginWithGoogle() async {
+
     try {
-      loading = true;
+      await setLoadingGoogle(true);
       await auth.loginWithGoogle();
       Modular.to.navigate('/home');
     } catch (e) {
-      setLoading(false);
+      setLoadingGoogle(false);
       setErrOrGoal(false);
-      print(e.toString());
       setMsg(e.toString());
     }
   }

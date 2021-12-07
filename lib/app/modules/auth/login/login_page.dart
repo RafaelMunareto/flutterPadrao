@@ -88,12 +88,14 @@ class LoginPageState extends State<LoginPage> {
                           function:
                               store.client.isValidLogin ? store.submit : null);
                     }),
-                     ButtonWidget(
-                      label: 'GOOGLE',
-                      loading: store.loading,
-                      function:
-                      store.loginWithGoogle
-                    ),
+                    Observer(builder: (_) {
+                      return ButtonWidget(
+                          label: 'GOOGLE',
+                          loading: store.loadingGoogle,
+                          function:store.loginWithGoogle
+                      );
+                    }),
+
                     const LinkRoteWidget(
                         labelBold: 'Esqueceu a senha', rota: '/auth/forget'),
                     const LinkRoteWidget(
