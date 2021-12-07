@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "937896090442",
+    "firebase_url": "https://flutterpadrao-default-rtdb.firebaseio.com",
     "project_id": "flutterpadrao",
     "storage_bucket": "flutterpadrao.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "937896090442-26godphgjh4kbbkjvt7gt4ams3bbgd7m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.flutter_padrao.fl.flutter_padrao",
+            "certificate_hash": "d0a29ee7d81e26af3d1eba3c2044340901166beb"
+          }
+        },
         {
           "client_id": "937896090442-ef3aj25hdepog2en7rpsoc5i49j2upr1.apps.googleusercontent.com",
           "client_type": 3

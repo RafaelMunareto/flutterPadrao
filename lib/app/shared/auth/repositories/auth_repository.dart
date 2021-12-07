@@ -7,7 +7,11 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'auth_repository_interface.dart';
 
 class AuthRepository implements IAuthRepository {
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: [
+      'https://www.googleapis.com/auth/drive',
+    ],
+  );
   final FirebaseAuth auth = Modular.get();
   final FirebaseFirestore db = Modular.get();
   final FirebaseDynamicLinks fdl = Modular.get();

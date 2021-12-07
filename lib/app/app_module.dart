@@ -34,7 +34,6 @@ class AppModule extends Module {
 
   @override
   final List<ModularRoute> routes = [
-    ChildRoute('/', child:  (context, args) => const SplashWidget()),
     ModuleRoute('/auth', module: AuthModule(), transition: TransitionType.leftToRightWithFade),
     ModuleRoute('/home', module: HomeModule(), transition: TransitionType.leftToRightWithFade),
     ModuleRoute('/settings', module: SettingsModule(), transition: TransitionType.leftToRightWithFade),
