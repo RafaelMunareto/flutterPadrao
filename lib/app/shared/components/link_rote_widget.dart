@@ -40,28 +40,26 @@ class _LinkRoteWidgetState extends State<LinkRoteWidget>
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FadeTransition(
-              opacity: _animacaoFade,
-              child: Text(
-                widget.label,
-                style: const TextStyle(
-                  fontSize: 16.0,
-                ),
+    return Container(
+      alignment: Alignment.centerRight,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FadeTransition(
+            opacity: _animacaoFade,
+            child: Text(
+              widget.label,
+              style: const TextStyle(
+                fontSize: 12.0,
               ),
             ),
-            FadeTransition(
-              opacity: _animacaoFade,
-              child: CursorPointerWidget(
-                  route: widget.rota, label: widget.labelBold),
-            )
-          ],
-        ),
+          ),
+          FadeTransition(
+            opacity: _animacaoFade,
+            child: CursorPointerWidget(
+                route: widget.rota, label: widget.labelBold),
+          )
+        ],
       ),
     );
   }

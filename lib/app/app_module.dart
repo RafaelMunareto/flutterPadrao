@@ -11,7 +11,6 @@ import 'package:flutter_padrao/app/shared/auth/repositories/biometric_repository
 import 'package:flutter_padrao/app/shared/auth/repositories/biometric_repository_interface.dart';
 import 'package:flutter_padrao/app/shared/repositories/localstorage/local_storage_interface.dart';
 import 'package:flutter_padrao/app/shared/repositories/localstorage/local_storage_share.dart';
-import 'package:flutter_padrao/app/shared/utils/splash_widget.dart';
 import 'package:flutter_padrao/app/shared/utils/themes/theme_preferences.dart';
 import 'package:local_auth/local_auth.dart';
 

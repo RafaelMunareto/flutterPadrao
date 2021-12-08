@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ButtonWidget extends StatefulWidget {
   final String label;
   final dynamic function;
   final bool loading;
+  final double? width;
 
   const ButtonWidget(
-      {Key? key, this.label = '', this.function, this.loading = false})  : super(key: key);
+      {Key? key,
+      this.label = '',
+      this.function,
+      this.loading = false,
+      this.width})
+      : super(key: key);
 
   @override
   _ButtonWidgetState createState() => _ButtonWidgetState();
@@ -37,11 +44,11 @@ class _ButtonWidgetState extends State<ButtonWidget>
 
   @override
   Widget build(BuildContext context) {
-    largura = Tween<double>(begin: 0, end: 500).animate(
+    largura = Tween<double>(begin: 400, end: widget.width ?? 500).animate(
         CurvedAnimation(parent: _controller, curve: const Interval(0.5, 1)));
     altura = Tween<double>(begin: 0, end: 50).animate(
         CurvedAnimation(parent: _controller, curve: const Interval(0.5, 0.7)));
-    radius = Tween<double>(begin: 0, end: 20).animate(
+    radius = Tween<double>(begin: 0, end: 40).animate(
         CurvedAnimation(parent: _controller, curve: const Interval(0.6, 1)));
     opacidade = Tween<double>(begin: 0, end: 1).animate(
         CurvedAnimation(parent: _controller, curve: const Interval(0.6, 0.8)));
@@ -63,11 +70,13 @@ class _ButtonWidgetState extends State<ButtonWidget>
         child: FadeTransition(
           opacity: opacidade,
           child: ElevatedButton(
-            style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(radius.value),
-            ))),
+            style: ElevatedButton.styleFrom(
+              primary: Colors.deepPurple,
+              enabledMouseCursor: SystemMouseCursors.basic,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(radius.value),
+              ),
+            ),
             onPressed: widget.function,
             child: widget.loading
                 ? const CircularProgressIndicator(
@@ -75,15 +84,16 @@ class _ButtonWidgetState extends State<ButtonWidget>
                   )
                 : Text(
                     widget.label,
-                    style: const TextStyle(color: Colors.white),
+                    style: const TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
           ),
         ),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(radius.value),
             gradient: const LinearGradient(colors: [
-              Color.fromRGBO(255, 176, 176, 1),
-              Color.fromRGBO(191, 43, 26, 1),
+              Color.fromARGB(255, 255, 136, 34),
+              Color.fromARGB(255, 255, 177, 41)
             ])),
       ),
     );

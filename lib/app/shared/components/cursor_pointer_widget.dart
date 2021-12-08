@@ -29,9 +29,8 @@ class _CursorPointerWidgetState extends State<CursorPointerWidget> {
         child: Text(
           widget.label,
           style: TextStyle(
-              color: _hover ? Colors.blue : null,
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold),
+              color: _hover ? Colors.blue : const Color(0XFF2661FA),
+              fontSize: 12.0),
         ),
         onTap: () => Modular.to.navigate(widget.route),
       ),

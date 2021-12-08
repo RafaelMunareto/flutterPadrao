@@ -1,10 +1,8 @@
-import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/modules/auth/shared/models/client_store.dart';
 import 'package:flutter_padrao/app/shared/auth/auth_controller.dart';
 import 'package:flutter_padrao/app/shared/repositories/localstorage/local_storage_interface.dart';
 import 'package:flutter_padrao/app/shared/utils/error_pt_br.dart';
-import 'package:local_auth/auth_strings.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:mobx/mobx.dart';
 
@@ -23,9 +21,6 @@ abstract class _LoginStoreBase with Store {
 
   @observable
   bool loading = false;
-
-  @observable
-  bool loadingGoogle = false;
 
   @observable
   String msg = '';
@@ -47,9 +42,6 @@ abstract class _LoginStoreBase with Store {
 
   @action
   setLoading(value) => loading = value;
-
-  @action
-  setLoadingGoogle(value) => loadingGoogle = value;
 
   //biometric
   @observable
@@ -87,11 +79,11 @@ abstract class _LoginStoreBase with Store {
   loginWithGoogle() async {
 
     try {
-      await setLoadingGoogle(true);
+      await setLoading(true);
       await auth.loginWithGoogle();
       Modular.to.navigate('/home');
     } catch (e) {
-      setLoadingGoogle(false);
+      setLoading(false);
       setErrOrGoal(false);
       setMsg(e.toString());
     }

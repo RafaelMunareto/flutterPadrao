@@ -51,7 +51,8 @@ class _TextFieldWidgetState extends State<TextFieldWidget>
     return Observer(builder: (_) {
       return Container(
         width: _animacaoSize.value,
-        padding: const EdgeInsets.all(2),
+        alignment: Alignment.center,
+        margin: const EdgeInsets.symmetric(horizontal: 40),
         // decoration: BoxDecoration(
         //     color: Colors.white,
         //     borderRadius: BorderRadius.circular(20),
@@ -65,7 +66,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget>
             onChanged: widget.onChanged,
             obscureText: widget.obscure,
             decoration: InputDecoration(
-              border: const OutlineInputBorder(),
+              //border: const OutlineInputBorder(),
               labelText: widget.labelText,
               errorText: widget.errorText == null ? null : widget.errorText(),
             ),

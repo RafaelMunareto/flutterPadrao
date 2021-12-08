@@ -56,11 +56,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/img/splash_light.png
-    - assets/img/splash_dark.png
-    - assets/img/digital.png
-    - assets/img/face.png
-    - assets/icon/icon_padrao.png
+    - assets/img/
 
 scripts:
   mobx: flutter pub run build_runner watch --delete-conflicting-outputs

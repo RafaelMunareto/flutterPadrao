@@ -8,25 +8,6 @@ class BiometricRepository implements IBiometricRepository {
   final LocalAuthentication auth = Modular.get();
 
   @override
-  Future<void> authenticate(String _authorized, bool _isAuthenticating) async {
-    bool authenticated = false;
-    try {
-      _isAuthenticating = true;
-      _authorized = 'Authenticating';
-      authenticated = await auth.authenticate(
-          localizedReason: 'Let OS determine authentication method',
-          useErrorDialogs: true,
-          stickyAuth: true);
-        _isAuthenticating = false;
-    } on PlatformException catch (e) {
-      _isAuthenticating = false;
-      _authorized = "Error - ${e.message}";
-      return;
-    }
-    _authorized = authenticated ? 'Authorized' : 'Not Authorized';
-  }
-
-  @override
   Future<String> authenticateWithBiometrics(faceOrFinger) async {
     String authorized = '';
     bool authenticated = false;
