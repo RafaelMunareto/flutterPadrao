@@ -34,6 +34,7 @@ abstract class _SettingsStoreBase with Store {
   }
 
   logoff() async {
+    await storage.put('biometric', []);
     await Modular.get<AuthController>().logout();
     Modular.to.navigate('/auth');
   }

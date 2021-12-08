@@ -159,6 +159,26 @@ abstract class _LoginStoreBase with Store {
     await checkBiometrics();
     await getAvailableBiometrics();
   }
+
+  @action
+  submitStorage()
+  {
+    storage.get('biometric').then((value)  {
+        if(!value.isEmpty) {
+          auth.getEmailPasswordLogin(value[0], value[1]).then((value) {
+            setLoading(false);
+            setErrOrGoal(false);
+            setMsg('Você deve validar o email primeiro!');
+            Modular.to.navigate('/home');
+          }).catchError((e) {
+            setLoading(false);
+            setErrOrGoal(false);
+            setMsg(ErrorPtBr().verificaCodeErro('auth/' + e.code));
+          });
+        }
+
+    });
+  }
 }
 
 enum SupportState {
