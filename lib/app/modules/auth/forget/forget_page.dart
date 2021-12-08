@@ -2,8 +2,9 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/modules/auth/forget/forget_store.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_padrao/app/shared/components/app_bar_widget.dart';
+import 'package:flutter_padrao/app/shared/components/background_widget.dart';
 import 'package:flutter_padrao/app/shared/components/button_widget.dart';
+import 'package:flutter_padrao/app/shared/components/link_rote_widget.dart';
 import 'package:flutter_padrao/app/shared/components/text_field_widget.dart';
 import 'package:flutter_padrao/app/shared/utils/snackbar_custom.dart';
 import 'package:mobx/mobx.dart';
@@ -27,8 +28,12 @@ class ForgetPageState extends State<ForgetPage> {
     super.didChangeDependencies();
     autorun(
           (_) {
-        if(store.msg != ''){
-          SnackbarCustom().createSnackBareErrOrGoal(_scaffoldKey, message:store.msg, errOrGoal:store.msgErrOrGoal, rota: '/auth');
+        if (store.msg != '') {
+          FocusScope.of(context).requestFocus(FocusNode());
+          SnackbarCustom().createSnackBareErrOrGoal(
+              _scaffoldKey, message: store.msg,
+              errOrGoal: store.msgErrOrGoal,
+              rota: '/auth');
           store.setMsg('');
         }
       },
@@ -38,49 +43,79 @@ class ForgetPageState extends State<ForgetPage> {
 
   @override
   Widget build(BuildContext context) {
-    var altura = MediaQuery.of(context).size.height * 0.2;
+    Size size = MediaQuery
+        .of(context)
+        .size;
+
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBarWidget(
-          title: widget.title, size: altura, context: context, back: true),
-      body: LayoutBuilder(builder: (context, constraint) {
-        var largura = constraint.maxWidth;
-        if (largura < 600) {
-          largura = largura * 1;
-        } else if (largura < 768) {
-          largura = largura * 0.6;
-        } else if (largura < 1024) {
-          largura = largura * 0.4;
-        } else {
-          largura = largura * 0.2;
-        }
+      body: BackgroundWidget(
+        child: LayoutBuilder(builder: (context, constraint) {
+          var largura = constraint.maxWidth;
 
-        return SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Center(
+          if (largura < 600) {
+            largura = largura * 1;
+          } else if (largura < 768) {
+            largura = largura * 0.6;
+          } else if (largura < 1024) {
+            largura = largura * 0.4;
+          } else {
+            largura = largura * 0.2;
+          }
+
+          return SingleChildScrollView(
               child: SizedBox(
                 width: largura,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    TextFieldWidget(
-                        labelText: 'email',
-                        onChanged: store.client.changeEmail,
-                        errorText: store.client.validateEmail),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      child: Text(
+                        "RECUPERAR SENHA",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 36,
+                            color: Theme
+                                .of(context)
+                                .primaryColor),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    SizedBox(height: size.height * 0.03),
+                    SizedBox(
+                        child: TextFieldWidget(
+                            labelText: 'E-mail',
+                            onChanged: store.client.changeEmail,
+                            errorText: store.client.validateEmail)),
+                    SizedBox(height: size.height * 0.05),
                     Observer(builder: (_) {
-                      return ButtonWidget(
-                          label: 'ENVIAR SENHA',
-                          loading: store.loading,
-                          function: store.client.isValidEmail ? store.submit : null);
+                      return Container(
+                        alignment: Alignment.centerRight,
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 40, vertical: 10),
+                        child: ButtonWidget(
+                            label: 'ENVIAR SENHA',
+                            width: size.width * 0.5,
+                            loading: store.loading,
+                            function:
+                            store.client.isValidEmail ? store.submit : null),
+                      );
                     }),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 58),
+                      child: const LinkRoteWidget(
+                          labelBold: 'Voltar para o login',
+                          rota: '/auth'),
+                    ),
                   ],
                 ),
-              ),
-            ),
-          ),
-        );
-      }),
+              ));
+        }),
+      ),
     );
   }
 }
+
+

@@ -2,7 +2,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/modules/auth/signup/signup_store.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_padrao/app/shared/components/app_bar_widget.dart';
+import 'package:flutter_padrao/app/shared/components/background_widget.dart';
 import 'package:flutter_padrao/app/shared/components/button_widget.dart';
 import 'package:flutter_padrao/app/shared/components/link_rote_widget.dart';
 import 'package:flutter_padrao/app/shared/components/text_field_widget.dart';
@@ -28,6 +28,7 @@ class SignupPageState extends State<SignupPage> {
     autorun(
       (_) {
         if (store.msg != '') {
+          FocusScope.of(context).requestFocus(FocusNode());
           SnackbarCustom().createSnackBareErrOrGoal(_scaffoldKey,
               errOrGoal: store.msgErrOrGoal, message: store.msg, rota: '/auth');
           store.setMsg('');
@@ -41,70 +42,94 @@ class SignupPageState extends State<SignupPage> {
     store.setGrupoEmail();
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
-    var altura = MediaQuery.of(context).size.height * 0.2;
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBarWidget(title: widget.title, size: altura, context: context),
-      body: LayoutBuilder(builder: (context, constraint) {
-        var largura = constraint.maxWidth;
-        if (largura < 600) {
-          largura = largura * 1;
-        } else if (largura < 768) {
-          largura = largura * 0.6;
-        } else if (largura < 1024) {
-          largura = largura * 0.4;
-        } else {
-          largura = largura * 0.2;
-        }
+      body: BackgroundWidget(
+        child: LayoutBuilder(builder: (context, constraint) {
+          var largura = constraint.maxWidth;
 
-        return SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
-            child: Center(
+          if (largura < 600) {
+            largura = largura * 1;
+          } else if (largura < 768) {
+            largura = largura * 0.6;
+          } else if (largura < 1024) {
+            largura = largura * 0.4;
+          } else {
+            largura = largura * 0.2;
+          }
+
+          return SingleChildScrollView(
               child: SizedBox(
                 width: largura,
                 child: Column(
-                  children: [
-                    TextFieldWidget(
-                        labelText: 'Nome',
-                        onChanged: store.client.changeName,
-                        errorText: store.client.validateName),
-                    TextFieldWidget(
-                        labelText: 'E-mail',
-                        onChanged: store.changeEmailGrupo,
-                        errorText: store.validateEmailGrupo),
-                    TextFieldWidget(
-                        labelText: 'Senha',
-                        obscure: true,
-                        onChanged: store.client.changePassword,
-                        errorText: store.client.validatePassword),
-                    TextFieldWidget(
-                        labelText: 'Confirmação de senha',
-                        obscure: true,
-                        onChanged: store.client.changeConfirmPassword,
-                        errorText: store.client.validateConfirmPassword),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      child: Text(
+                        "CADASTRO",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 36,
+                            color: Theme.of(context).primaryColor),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    SizedBox(height: size.height * 0.03),
+                    SizedBox(
+                        child: TextFieldWidget(
+                            labelText: 'Nome',
+                            onChanged: store.client.changeName,
+                            errorText: store.client.validateName)),
+                    SizedBox(
+                        child: TextFieldWidget(
+                            labelText: 'E-mail',
+                            onChanged: store.client.changeEmail,
+                            errorText: store.client.validateEmail)),
+                    SizedBox(
+                      child: TextFieldWidget(
+                          labelText: 'Senha',
+                          obscure: true,
+                          onChanged: store.client.changePassword,
+                          errorText: store.client.validatePassword),
+                    ),
+                    SizedBox(
+                      child: TextFieldWidget(
+                          labelText: 'Confirmação de senha',
+                          obscure: true,
+                          onChanged: store.client.changeConfirmPassword,
+                          errorText: store.client.validateConfirmPassword),
+                    ),
+                    SizedBox(height: size.height * 0.05),
                     Observer(builder: (_) {
-                      return ButtonWidget(
-                          label: 'CADASTRAR',
-                          loading: store.loading,
-                          function: store.isValidRegisterEmailGrupo
-                              ? store.submit
-                              : null);
+                      return Container(
+                        alignment: Alignment.centerRight,
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 40, vertical: 10),
+                        child: ButtonWidget(
+                            label: 'CADASTRAR',
+                            width: size.width * 0.5,
+                            loading: store.loading,
+                            function:
+                            store.isValidRegisterEmailGrupo ? store.submit : null),
+                      );
                     }),
-                    const LinkRoteWidget(
-                        label: 'Já possui cadastro? ',
-                        labelBold: 'Login',
-                        rota: '/auth'),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 58),
+                      child: const LinkRoteWidget(
+                          labelBold: 'Já possui cadastro? Login',
+                          rota: '/auth'),
+                    ),
                   ],
                 ),
-              ),
-            ),
-          ),
-        );
-      }),
+              ));
+        }),
+      ),
     );
   }
 }

@@ -28,6 +28,7 @@ class LoginPageState extends State<LoginPage> {
     autorun(
       (_) {
         if (store.msg != '') {
+          FocusScope.of(context).requestFocus(FocusNode());
           SnackbarCustom().createSnackBareErrOrGoal(_scaffoldKey,
               message: store.msg, errOrGoal: store.errOrGoal);
           store.setMsg('');
@@ -125,8 +126,7 @@ class LoginPageState extends State<LoginPage> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 40),
+                          margin: const EdgeInsets.symmetric(horizontal: 40),
                           child: GestureDetector(
                             child: const Image(
                               image: AssetImage('assets/img/google.png'),
@@ -136,20 +136,20 @@ class LoginPageState extends State<LoginPage> {
                         ),
                         store.supportState == SupportState.supported
                             ? GestureDetector(
-                          onTap: store.authenticateBiometric,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 20),
-                            width: 64,
-                            child: store.faceOrFinger
-                                ? const Image(
-                                image:
-                                AssetImage('assets/img/face.png'))
-                                : const Image(
-                                image: AssetImage(
-                                    'assets/img/digital.png')),
-                          ),
-                        )
+                                onTap: store.authenticateBiometric,
+                                child: Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  width: 64,
+                                  child: store.faceOrFinger
+                                      ? const Image(
+                                          image:
+                                              AssetImage('assets/img/face.png'))
+                                      : const Image(
+                                          image: AssetImage(
+                                              'assets/img/digital.png')),
+                                ),
+                              )
                             : Container(),
                       ],
                     ),
@@ -162,91 +162,4 @@ class LoginPageState extends State<LoginPage> {
       ),
     );
   }
-// @override
-// Widget build(BuildContext context) {
-//   var altura = MediaQuery.of(context).size.height * 0.2;
-//   return Scaffold(
-//     key: _scaffoldKey,
-//     appBar: AppBarWidget(
-//         title: widget.title, size: altura, context: context, back: false),
-//     body: LayoutBuilder(builder: (context, constraint) {
-//       var largura = constraint.maxWidth;
-//
-//       if (largura < 600) {
-//         largura = largura * 1;
-//       } else if (largura < 768) {
-//         largura = largura * 0.6;
-//       } else if (largura < 1024) {
-//         largura = largura * 0.4;
-//       } else {
-//         largura = largura * 0.2;
-//       }
-//
-//       return SingleChildScrollView(
-//         child: Padding(
-//           padding: const EdgeInsets.all(16.0),
-//           child: Center(
-//             child: SizedBox(
-//               width: largura,
-//               child: Column(
-//                 mainAxisAlignment: MainAxisAlignment.center,
-//                 children: <Widget>[
-//                   TextFieldWidget(
-//                       labelText: 'E-mail',
-//                       onChanged: store.client.changeEmail,
-//                       errorText: store.client.validateEmail),
-//                   TextFieldWidget(
-//                       labelText: 'Senha',
-//                       obscure: true,
-//                       onChanged: store.client.changePassword,
-//                       errorText: store.client.validatePassword),
-//                   Observer(builder: (_) {
-//                     return ButtonWidget(
-//                         label: 'LOGIN',
-//                         loading: store.loading,
-//                         function:
-//                             store.client.isValidLogin ? store.submit : null);
-//                   }),
-//                   Observer(builder: (_) {
-//                     return ButtonWidget(
-//                         label: 'GOOGLE',
-//                         loading: store.loadingGoogle,
-//                         function:store.loginWithGoogle
-//                     );
-//                   }),
-//
-//                   const LinkRoteWidget(
-//                       labelBold: 'Esqueceu a senha', rota: '/auth/forget'),
-//                   const LinkRoteWidget(
-//                       label: 'Não possui cadastro? ',
-//                       labelBold: 'Registre-se',
-//                       rota: '/auth/signup'),
-//                   Observer(builder: (_) {
-//                     return Padding(
-//                         padding: const EdgeInsets.only(top: 8.0),
-//                         child: store.supportState == SupportState.supported
-//                             ? GestureDetector(
-//                                 onTap: store.authenticateBiometric,
-//                                 child: SizedBox(
-//                                   width: 92,
-//                                   child: store.faceOrFinger
-//                                       ? const Image(
-//                                           image: AssetImage(
-//                                               'assets/img/face.png'))
-//                                       : const Image(
-//                                           image: AssetImage(
-//                                               'assets/img/digital.png')),
-//                                 ),
-//                               )
-//                             : Container());
-//                   })
-//                 ],
-//               ),
-//             ),
-//           ),
-//         ),
-//       );
-//     }),
-//   );
-// }
 }

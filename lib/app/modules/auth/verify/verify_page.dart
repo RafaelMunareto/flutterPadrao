@@ -3,6 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/modules/auth/verify/verify_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_padrao/app/shared/components/app_bar_widget.dart';
+import 'package:flutter_padrao/app/shared/components/background_widget.dart';
 
 class VerifyPage extends StatefulWidget {
   final String title;
@@ -46,16 +47,57 @@ class VerifyPageState extends State<VerifyPage> {
 
   @override
   Widget build(BuildContext context) {
-    var altura = MediaQuery.of(context).size.height * 0.2;
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
-      appBar: AppBarWidget(title: widget.title, size: altura, context: context),
-      body: Observer(builder: (_) {
-        return Center(
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Container(child: store.msg != '' ? _card() : Container()),
-          ]),
-        );
-      }),
+      body: BackgroundWidget(
+        child: LayoutBuilder(builder: (context, constraint) {
+          var largura = constraint.maxWidth;
+
+          if (largura < 600) {
+            largura = largura * 1;
+          } else if (largura < 768) {
+            largura = largura * 0.6;
+          } else if (largura < 1024) {
+            largura = largura * 0.4;
+          } else {
+            largura = largura * 0.2;
+          }
+
+          return SingleChildScrollView(
+              child: SizedBox(
+            width: largura,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  child: Text(
+                    "VERIFICAÇÃO DE EMAIL",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 36,
+                        color: Theme.of(context).primaryColor),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                SizedBox(height: size.height * 0.03),
+                Observer(builder: (_) {
+                  return Center(
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                              child: store.msg != '' ? _card() : Container()),
+                        ]),
+                  );
+                })
+              ],
+            ),
+          ));
+        }),
+      ),
     );
   }
 }
