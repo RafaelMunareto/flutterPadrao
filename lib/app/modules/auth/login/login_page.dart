@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/modules/auth/login/login_store.dart';
@@ -32,6 +34,8 @@ class LoginPageState extends State<LoginPage> {
           SnackbarCustom().createSnackBareErrOrGoal(_scaffoldKey,
               message: store.msg, errOrGoal: store.errOrGoal);
           store.setMsg('');
+          Timer(const Duration(seconds: 2),
+                  () => store.client.setCleanVariables());
         }
       },
     );

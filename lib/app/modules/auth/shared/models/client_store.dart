@@ -29,6 +29,15 @@ abstract class _ClientStoreBase with Store {
   @action
   changeConfirmPassword(String value) => confirmPassword = value;
 
+  @action
+  setCleanVariables()
+  {
+    changeName('');
+    changePassword('');
+    changeConfirmPassword('');
+    changeEmail('');
+  }
+
   @computed
   bool get isValidLogin {
     return validateEmail() == null && validatePassword() == null;

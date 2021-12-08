@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_padrao/app/shared/auth/repositories/auth_repository.dart';
+import 'package:flutter_padrao/app/shared/auth/repositories/auth_repository_interface.dart';
 import 'package:flutter_padrao/app/shared/repositories/localstorage/local_storage_interface.dart';
 import 'package:flutter_padrao/app/shared/repositories/localstorage/local_storage_share.dart';
 
@@ -14,6 +16,7 @@ class SplashWidget extends StatefulWidget {
 
 class _SplashWidgetState extends State<SplashWidget> {
   final ILocalStorage theme = LocalStorageShare();
+  final AuthRepository auth = AuthRepository();
   bool lightMode = true;
 
 
@@ -29,8 +32,13 @@ class _SplashWidgetState extends State<SplashWidget> {
   void initState() {
     super.initState();
     changeThemeStorage();
-    Future.delayed(const Duration(seconds: 3), () {
-      Modular.to.navigate('/auth');
+    Future.delayed(const Duration(seconds: 2), () {
+      if(auth.getUser() != null){
+        Modular.to.navigate('/home');
+      }else{
+        Modular.to.navigate('/auth');
+      }
+
     });
   }
 

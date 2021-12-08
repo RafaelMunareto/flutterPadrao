@@ -11,6 +11,7 @@ import 'package:flutter_padrao/app/shared/auth/repositories/biometric_repository
 import 'package:flutter_padrao/app/shared/auth/repositories/biometric_repository_interface.dart';
 import 'package:flutter_padrao/app/shared/repositories/localstorage/local_storage_interface.dart';
 import 'package:flutter_padrao/app/shared/repositories/localstorage/local_storage_share.dart';
+import 'package:flutter_padrao/app/shared/utils/splash_widget.dart';
 import 'package:flutter_padrao/app/shared/utils/themes/theme_preferences.dart';
 import 'package:local_auth/local_auth.dart';
 
@@ -33,6 +34,7 @@ class AppModule extends Module {
 
   @override
   final List<ModularRoute> routes = [
+    ChildRoute('/', child: (_, args) => const SplashWidget()),
     ModuleRoute('/auth', module: AuthModule(), transition: TransitionType.leftToRightWithFade),
     ModuleRoute('/home', module: HomeModule(), transition: TransitionType.leftToRightWithFade),
     ModuleRoute('/settings', module: SettingsModule(), transition: TransitionType.leftToRightWithFade),

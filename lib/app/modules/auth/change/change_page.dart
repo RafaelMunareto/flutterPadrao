@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/modules/auth/change/change_store.dart';
@@ -40,6 +42,8 @@ class ChangePageState extends State<ChangePage> {
           SnackbarCustom().createSnackBareErrOrGoal(_scaffoldKey,
               message: store.msg, errOrGoal: store.msgErrOrGoal, rota: '/auth');
           store.setMsg('');
+          Timer(const Duration(seconds: 2),
+                  () => store.client.setCleanVariables());
         }
       },
     );

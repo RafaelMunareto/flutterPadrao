@@ -64,37 +64,42 @@ class _ButtonWidgetState extends State<ButtonWidget>
 
   Widget _buildAnimation(BuildContext context, Widget? child) {
     return InkWell(
-      child: Container(
-        width: largura.value,
-        height: altura.value,
-        child: FadeTransition(
-          opacity: opacidade,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Colors.deepPurple,
-              enabledMouseCursor: SystemMouseCursors.basic,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(radius.value),
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Container(
+          width: largura.value,
+          height: altura.value,
+          child: FadeTransition(
+            opacity: opacidade,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.deepPurple,
+                enabledMouseCursor: SystemMouseCursors.basic,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(radius.value),
+                ),
               ),
+              onPressed: widget.function,
+              child: widget.loading
+                  ? const CircularProgressIndicator(
+                      color: Colors.white,
+                    )
+                  : Text(
+                      widget.label,
+                      style: const TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
             ),
-            onPressed: widget.function,
-            child: widget.loading
-                ? const CircularProgressIndicator(
-                    color: Colors.white,
-                  )
-                : Text(
-                    widget.label,
-                    style: const TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
           ),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(radius.value),
+              gradient: const LinearGradient(colors: [
+                Color.fromARGB(255, 255, 136, 34),
+                Color.fromARGB(255, 255, 177, 41)
+              ])),
         ),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(radius.value),
-            gradient: const LinearGradient(colors: [
-              Color.fromARGB(255, 255, 136, 34),
-              Color.fromARGB(255, 255, 177, 41)
-            ])),
       ),
     );
   }

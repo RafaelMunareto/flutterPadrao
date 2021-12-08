@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/modules/auth/forget/forget_store.dart';
@@ -35,6 +37,8 @@ class ForgetPageState extends State<ForgetPage> {
               errOrGoal: store.msgErrOrGoal,
               rota: '/auth');
           store.setMsg('');
+          Timer(const Duration(seconds: 2),
+                  () => store.client.setCleanVariables());
         }
       },
 

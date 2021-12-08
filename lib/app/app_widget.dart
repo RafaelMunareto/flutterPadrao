@@ -60,7 +60,7 @@ class _AppWidgetState extends State<AppWidget> {
     return MaterialApp(
       title: 'Flutter Padrão',
       debugShowCheckedModeBanner: false,
-      initialRoute: "/auth",
+      initialRoute: "/",
       theme: lightThemeData(context),
       darkTheme: darkThemeData(context),
       themeMode: _themeMode,

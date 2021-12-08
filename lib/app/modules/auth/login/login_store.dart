@@ -62,6 +62,7 @@ abstract class _LoginStoreBase with Store {
     auth.getEmailPasswordLogin(client.email, client.password).then((value) {
       if (value.user.emailVerified) {
         setStorageLogin();
+        setStorageLoginNormal();
         Modular.to.navigate('/home');
       }
       setLoading(false);
@@ -139,8 +140,14 @@ abstract class _LoginStoreBase with Store {
   }
 
   //storage save login e password
+  @action
   void setStorageLogin() async {
     await storage.put('biometric', login);
+  }
+
+  @action
+  void setStorageLoginNormal() async {
+    await storage.put('login-normal', login);
   }
 
   @action
@@ -148,12 +155,17 @@ abstract class _LoginStoreBase with Store {
     await storage.get('biometric').then((value) => loginStorage = value);
   }
 
+  @action
+  getStorageLoginNormal() async {
+    await storage.get('login-normal').then((value) => loginStorage = value);
+  }
+
   //check support device
   @action
   checkSupportDevice() async {
     await getStorageLogin();
     await bio.isDeviceSupported().then((isSupported) => supportState =
-        isSupported && loginStorage != null
+        isSupported && loginStorage!.isNotEmpty
             ? SupportState.supported
             : SupportState.unsupported);
     await checkBiometrics();
@@ -163,7 +175,7 @@ abstract class _LoginStoreBase with Store {
   @action
   submitStorage()
   {
-    storage.get('biometric').then((value)  {
+    storage.get('login-normal').then((value)  {
         if(!value.isEmpty) {
           auth.getEmailPasswordLogin(value[0], value[1]).then((value) {
             setLoading(false);
