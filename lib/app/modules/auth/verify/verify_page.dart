@@ -25,7 +25,6 @@ class VerifyPageState extends State<VerifyPage> {
   void initState() {
     store.setCode(widget.code);
     store.setMode(widget.mode);
-    print(widget.code);
     store.emailVerify();
     super.initState();
   }
