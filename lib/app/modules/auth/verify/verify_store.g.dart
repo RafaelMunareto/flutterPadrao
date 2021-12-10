@@ -9,33 +9,63 @@ part of 'verify_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$VerifyStore on _VerifyStoreBase, Store {
-  final _$msgEmailVerifyAtom = Atom(name: '_VerifyStoreBase.msgEmailVerify');
+  final _$codeAtom = Atom(name: '_VerifyStoreBase.code');
 
   @override
-  String get msgEmailVerify {
-    _$msgEmailVerifyAtom.reportRead();
-    return super.msgEmailVerify;
+  String get code {
+    _$codeAtom.reportRead();
+    return super.code;
   }
 
   @override
-  set msgEmailVerify(String value) {
-    _$msgEmailVerifyAtom.reportWrite(value, super.msgEmailVerify, () {
-      super.msgEmailVerify = value;
+  set code(String value) {
+    _$codeAtom.reportWrite(value, super.code, () {
+      super.code = value;
     });
   }
 
-  final _$tipoAtom = Atom(name: '_VerifyStoreBase.tipo');
+  final _$msgAtom = Atom(name: '_VerifyStoreBase.msg');
 
   @override
-  String get tipo {
-    _$tipoAtom.reportRead();
-    return super.tipo;
+  String get msg {
+    _$msgAtom.reportRead();
+    return super.msg;
   }
 
   @override
-  set tipo(String value) {
-    _$tipoAtom.reportWrite(value, super.tipo, () {
-      super.tipo = value;
+  set msg(String value) {
+    _$msgAtom.reportWrite(value, super.msg, () {
+      super.msg = value;
+    });
+  }
+
+  final _$modeAtom = Atom(name: '_VerifyStoreBase.mode');
+
+  @override
+  String get mode {
+    _$modeAtom.reportRead();
+    return super.mode;
+  }
+
+  @override
+  set mode(String value) {
+    _$modeAtom.reportWrite(value, super.mode, () {
+      super.mode = value;
+    });
+  }
+
+  final _$msgErrOrGoalAtom = Atom(name: '_VerifyStoreBase.msgErrOrGoal');
+
+  @override
+  bool get msgErrOrGoal {
+    _$msgErrOrGoalAtom.reportRead();
+    return super.msgErrOrGoal;
+  }
+
+  @override
+  set msgErrOrGoal(bool value) {
+    _$msgErrOrGoalAtom.reportWrite(value, super.msgErrOrGoal, () {
+      super.msgErrOrGoal = value;
     });
   }
 
@@ -43,11 +73,44 @@ mixin _$VerifyStore on _VerifyStoreBase, Store {
       ActionController(name: '_VerifyStoreBase');
 
   @override
-  dynamic verificaTipo() {
+  dynamic setMode(dynamic value) {
     final _$actionInfo = _$_VerifyStoreBaseActionController.startAction(
-        name: '_VerifyStoreBase.verificaTipo');
+        name: '_VerifyStoreBase.setMode');
     try {
-      return super.verificaTipo();
+      return super.setMode(value);
+    } finally {
+      _$_VerifyStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setCode(dynamic value) {
+    final _$actionInfo = _$_VerifyStoreBaseActionController.startAction(
+        name: '_VerifyStoreBase.setCode');
+    try {
+      return super.setCode(value);
+    } finally {
+      _$_VerifyStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setMsgErrOrGoal(dynamic value) {
+    final _$actionInfo = _$_VerifyStoreBaseActionController.startAction(
+        name: '_VerifyStoreBase.setMsgErrOrGoal');
+    try {
+      return super.setMsgErrOrGoal(value);
+    } finally {
+      _$_VerifyStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setMsg(dynamic value) {
+    final _$actionInfo = _$_VerifyStoreBaseActionController.startAction(
+        name: '_VerifyStoreBase.setMsg');
+    try {
+      return super.setMsg(value);
     } finally {
       _$_VerifyStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -67,8 +130,10 @@ mixin _$VerifyStore on _VerifyStoreBase, Store {
   @override
   String toString() {
     return '''
-msgEmailVerify: ${msgEmailVerify},
-tipo: ${tipo}
+code: ${code},
+msg: ${msg},
+mode: ${mode},
+msgErrOrGoal: ${msgErrOrGoal}
     ''';
   }
 }

@@ -141,22 +141,66 @@ mixin _$AuthController on _AuthControllerBase, Store {
   }
 
   @override
-  Future<String?> emailVerify() {
+  Future<dynamic> emailVerify(dynamic code) {
     final _$actionInfo = _$_AuthControllerBaseActionController.startAction(
         name: '_AuthControllerBase.emailVerify');
     try {
-      return super.emailVerify();
+      return super.emailVerify(code);
     } finally {
       _$_AuthControllerBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  dynamic usuarioLogado() {
+  dynamic usuarioNaoLogado() {
     final _$actionInfo = _$_AuthControllerBaseActionController.startAction(
-        name: '_AuthControllerBase.usuarioLogado');
+        name: '_AuthControllerBase.usuarioNaoLogado');
     try {
-      return super.usuarioLogado();
+      return super.usuarioNaoLogado();
+    } finally {
+      _$_AuthControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  Future<dynamic> checkBiometrics() {
+    final _$actionInfo = _$_AuthControllerBaseActionController.startAction(
+        name: '_AuthControllerBase.checkBiometrics');
+    try {
+      return super.checkBiometrics();
+    } finally {
+      _$_AuthControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  Future<dynamic> getAvailableBiometrics() {
+    final _$actionInfo = _$_AuthControllerBaseActionController.startAction(
+        name: '_AuthControllerBase.getAvailableBiometrics');
+    try {
+      return super.getAvailableBiometrics();
+    } finally {
+      _$_AuthControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  Future<String> authenticateWithBiometrics(bool faceOrFinger) {
+    final _$actionInfo = _$_AuthControllerBaseActionController.startAction(
+        name: '_AuthControllerBase.authenticateWithBiometrics');
+    try {
+      return super.authenticateWithBiometrics(faceOrFinger);
+    } finally {
+      _$_AuthControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic cancelAuthentication() {
+    final _$actionInfo = _$_AuthControllerBaseActionController.startAction(
+        name: '_AuthControllerBase.cancelAuthentication');
+    try {
+      return super.cancelAuthentication();
     } finally {
       _$_AuthControllerBaseActionController.endAction(_$actionInfo);
     }

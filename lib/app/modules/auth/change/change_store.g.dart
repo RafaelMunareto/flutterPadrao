@@ -39,33 +39,33 @@ mixin _$ChangeStore on _ChangeStoreBase, Store {
     });
   }
 
-  final _$msgFirebaseAtom = Atom(name: '_ChangeStoreBase.msgFirebase');
+  final _$msgAtom = Atom(name: '_ChangeStoreBase.msg');
 
   @override
-  String get msgFirebase {
-    _$msgFirebaseAtom.reportRead();
-    return super.msgFirebase;
+  String get msg {
+    _$msgAtom.reportRead();
+    return super.msg;
   }
 
   @override
-  set msgFirebase(String value) {
-    _$msgFirebaseAtom.reportWrite(value, super.msgFirebase, () {
-      super.msgFirebase = value;
+  set msg(String value) {
+    _$msgAtom.reportWrite(value, super.msg, () {
+      super.msg = value;
     });
   }
 
-  final _$checkErrorAtom = Atom(name: '_ChangeStoreBase.checkError');
+  final _$msgErrOrGoalAtom = Atom(name: '_ChangeStoreBase.msgErrOrGoal');
 
   @override
-  bool get checkError {
-    _$checkErrorAtom.reportRead();
-    return super.checkError;
+  bool get msgErrOrGoal {
+    _$msgErrOrGoalAtom.reportRead();
+    return super.msgErrOrGoal;
   }
 
   @override
-  set checkError(bool value) {
-    _$checkErrorAtom.reportWrite(value, super.checkError, () {
-      super.checkError = value;
+  set msgErrOrGoal(bool value) {
+    _$msgErrOrGoalAtom.reportWrite(value, super.msgErrOrGoal, () {
+      super.msgErrOrGoal = value;
     });
   }
 
@@ -78,6 +78,39 @@ mixin _$ChangeStore on _ChangeStoreBase, Store {
         name: '_ChangeStoreBase.setCode');
     try {
       return super.setCode(value);
+    } finally {
+      _$_ChangeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setMsg(dynamic value) {
+    final _$actionInfo = _$_ChangeStoreBaseActionController.startAction(
+        name: '_ChangeStoreBase.setMsg');
+    try {
+      return super.setMsg(value);
+    } finally {
+      _$_ChangeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setLoading(dynamic value) {
+    final _$actionInfo = _$_ChangeStoreBaseActionController.startAction(
+        name: '_ChangeStoreBase.setLoading');
+    try {
+      return super.setLoading(value);
+    } finally {
+      _$_ChangeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setMsgErrOrGoal(dynamic value) {
+    final _$actionInfo = _$_ChangeStoreBaseActionController.startAction(
+        name: '_ChangeStoreBase.setMsgErrOrGoal');
+    try {
+      return super.setMsgErrOrGoal(value);
     } finally {
       _$_ChangeStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -99,8 +132,8 @@ mixin _$ChangeStore on _ChangeStoreBase, Store {
     return '''
 loading: ${loading},
 code: ${code},
-msgFirebase: ${msgFirebase},
-checkError: ${checkError}
+msg: ${msg},
+msgErrOrGoal: ${msgErrOrGoal}
     ''';
   }
 }

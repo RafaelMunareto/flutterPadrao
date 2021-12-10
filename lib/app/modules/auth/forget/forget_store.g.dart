@@ -24,21 +24,6 @@ mixin _$ForgetStore on _ForgetStoreBase, Store {
     });
   }
 
-  final _$msgFirebaseAtom = Atom(name: '_ForgetStoreBase.msgFirebase');
-
-  @override
-  String get msgFirebase {
-    _$msgFirebaseAtom.reportRead();
-    return super.msgFirebase;
-  }
-
-  @override
-  set msgFirebase(String value) {
-    _$msgFirebaseAtom.reportWrite(value, super.msgFirebase, () {
-      super.msgFirebase = value;
-    });
-  }
-
   final _$checkErrorAtom = Atom(name: '_ForgetStoreBase.checkError');
 
   @override
@@ -54,8 +39,71 @@ mixin _$ForgetStore on _ForgetStoreBase, Store {
     });
   }
 
+  final _$msgAtom = Atom(name: '_ForgetStoreBase.msg');
+
+  @override
+  String get msg {
+    _$msgAtom.reportRead();
+    return super.msg;
+  }
+
+  @override
+  set msg(String value) {
+    _$msgAtom.reportWrite(value, super.msg, () {
+      super.msg = value;
+    });
+  }
+
+  final _$msgErrOrGoalAtom = Atom(name: '_ForgetStoreBase.msgErrOrGoal');
+
+  @override
+  bool get msgErrOrGoal {
+    _$msgErrOrGoalAtom.reportRead();
+    return super.msgErrOrGoal;
+  }
+
+  @override
+  set msgErrOrGoal(bool value) {
+    _$msgErrOrGoalAtom.reportWrite(value, super.msgErrOrGoal, () {
+      super.msgErrOrGoal = value;
+    });
+  }
+
   final _$_ForgetStoreBaseActionController =
       ActionController(name: '_ForgetStoreBase');
+
+  @override
+  dynamic setMsg(dynamic value) {
+    final _$actionInfo = _$_ForgetStoreBaseActionController.startAction(
+        name: '_ForgetStoreBase.setMsg');
+    try {
+      return super.setMsg(value);
+    } finally {
+      _$_ForgetStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setLoading(dynamic value) {
+    final _$actionInfo = _$_ForgetStoreBaseActionController.startAction(
+        name: '_ForgetStoreBase.setLoading');
+    try {
+      return super.setLoading(value);
+    } finally {
+      _$_ForgetStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setMsgErrOrGoal(dynamic value) {
+    final _$actionInfo = _$_ForgetStoreBaseActionController.startAction(
+        name: '_ForgetStoreBase.setMsgErrOrGoal');
+    try {
+      return super.setMsgErrOrGoal(value);
+    } finally {
+      _$_ForgetStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   dynamic submit() {
@@ -72,8 +120,9 @@ mixin _$ForgetStore on _ForgetStoreBase, Store {
   String toString() {
     return '''
 loading: ${loading},
-msgFirebase: ${msgFirebase},
-checkError: ${checkError}
+checkError: ${checkError},
+msg: ${msg},
+msgErrOrGoal: ${msgErrOrGoal}
     ''';
   }
 }
