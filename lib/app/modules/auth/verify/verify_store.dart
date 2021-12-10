@@ -8,8 +8,8 @@ import 'package:mobx/mobx.dart';
 part 'verify_store.g.dart';
 
 class VerifyStore = _VerifyStoreBase with _$VerifyStore;
-abstract class _VerifyStoreBase with Store {
 
+abstract class _VerifyStoreBase with Store {
   AuthController auth = Modular.get();
 
   @observable
@@ -19,7 +19,13 @@ abstract class _VerifyStoreBase with Store {
   String msg = '';
 
   @observable
+  String mode = '';
+
+  @observable
   bool msgErrOrGoal = false;
+
+  @action
+  setMode(value) => mode = value;
 
   @action
   setCode(value) => code = value;
@@ -31,8 +37,10 @@ abstract class _VerifyStoreBase with Store {
   setMsg(value) => msg = value;
 
   @action
-  emailVerify()
-  {
+  emailVerify() {
+    if (mode == 'resetPassword') {
+      Timer(const Duration(seconds: 1), () => Modular.to.navigate('/auth/change/$code'));
+    } else {
       auth.authRepository.emailVerify(code).then((value) {
         setMsgErrOrGoal(true);
         setMsg('Código validado!');
@@ -40,9 +48,8 @@ abstract class _VerifyStoreBase with Store {
       }).catchError((e) {
         setMsgErrOrGoal(false);
         setMsg(ErrorPtBr().verificaCodeErro('auth/' + e.code));
+        Timer(const Duration(seconds: 3), () => Modular.to.navigate('/auth'));
       });
-
+    }
   }
-
-
 }

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/shared/utils/error_pt_br.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -14,8 +15,8 @@ class AuthRepository implements IAuthRepository {
 
   @override
   Future getEmailPasswordLogin(email, password) async {
-    return await auth
-        .signInWithEmailAndPassword(email: email, password: password);
+    return await auth.signInWithEmailAndPassword(
+        email: email, password: password);
   }
 
   @override
@@ -47,8 +48,8 @@ class AuthRepository implements IAuthRepository {
 
   @override
   getUser() {
-     User? user = FirebaseAuth.instance.currentUser;
-     return user;
+    User? user = FirebaseAuth.instance.currentUser;
+    return user;
   }
 
   @override
@@ -67,8 +68,12 @@ class AuthRepository implements IAuthRepository {
         androidPackageName: 'br.flutter_padrao.fl.flutter_padrao',
         handleCodeInApp: true,
       );
-      if (user != null && !getUser().emailVerified) {
-        await user.sendEmailVerification(actionCodeSettings);
+      if(kIsWeb){
+        await user!.sendEmailVerification();
+      }else{
+        if (user != null && !getUser().emailVerified) {
+          await user.sendEmailVerification(actionCodeSettings);
+        }
       }
       firebaseUser.user!.updatePhotoURL(
           'https://firebasestorage.googleapis.com/v0/b/flutterpadrao.appspot.com/o/perfil%2Fbancario1.png?alt=media&token=ff79a9b9-7f1e-4e53-98c7-824324f74935');
@@ -94,11 +99,9 @@ class AuthRepository implements IAuthRepository {
     await auth.checkActionCode(code);
     await auth.applyActionCode(code);
     getUser().reload();
-    db.collection('usuarios').doc(getUser().uid).update({
-      "verificado": true
-    });
+    db.collection('usuarios').doc(getUser().uid).update({"verificado": true});
     User? user = FirebaseAuth.instance.currentUser;
-    return  user;
+    return user;
   }
 
   @override
@@ -121,17 +124,21 @@ class AuthRepository implements IAuthRepository {
       androidPackageName: 'br.flutter_padrao.fl.flutter_padrao',
       handleCodeInApp: true,
     );
+    if (kIsWeb) {
+      return auth.sendPasswordResetEmail(email: email);
+    }
     return auth.sendPasswordResetEmail(
         email: email, actionCodeSettings: actionCodeSettings);
   }
 
   @override
   Future changeResetPassword(password, code) async {
-    try{
+    try {
       await auth.verifyPasswordResetCode(code).then((value) {
         auth.currentUser?.reload();
-        return auth.confirmPasswordReset(code: code, newPassword: password); });
-    }on FirebaseAuthException catch (e) {
+        return auth.confirmPasswordReset(code: code, newPassword: password);
+      });
+    } on FirebaseAuthException catch (e) {
       return ErrorPtBr().verificaCodeErro('auth/' + e.code);
     }
   }
@@ -145,5 +152,4 @@ class AuthRepository implements IAuthRepository {
       "verificado": true
     });
   }
-
 }

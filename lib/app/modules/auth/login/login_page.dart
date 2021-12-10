@@ -8,6 +8,7 @@ import 'package:flutter_padrao/app/shared/components/background_widget.dart';
 import 'package:flutter_padrao/app/shared/components/button_widget.dart';
 import 'package:flutter_padrao/app/shared/components/link_rote_widget.dart';
 import 'package:flutter_padrao/app/shared/components/text_field_widget.dart';
+import 'package:flutter_padrao/app/shared/utils/largura_layout_builder.dart';
 import 'package:flutter_padrao/app/shared/utils/snackbar_custom.dart';
 import 'package:mobx/mobx.dart';
 
@@ -34,8 +35,10 @@ class LoginPageState extends State<LoginPage> {
           SnackbarCustom().createSnackBareErrOrGoal(_scaffoldKey,
               message: store.msg, errOrGoal: store.errOrGoal);
           store.setMsg('');
-          Timer(const Duration(seconds: 2),
-                  () => store.client.setCleanVariables());
+          if(store.errOrGoal) {
+            Timer(const Duration(seconds: 2),
+                    () => store.client.setCleanVariables());
+          }
         }
       },
     );
@@ -56,18 +59,7 @@ class LoginPageState extends State<LoginPage> {
       key: _scaffoldKey,
       body: BackgroundWidget(
         child: LayoutBuilder(builder: (context, constraint) {
-          var largura = constraint.maxWidth;
-
-          if (largura < 600) {
-            largura = largura * 1;
-          } else if (largura < 768) {
-            largura = largura * 0.6;
-          } else if (largura < 1024) {
-            largura = largura * 0.4;
-          } else {
-            largura = largura * 0.2;
-          }
-
+          var largura = LarguraLayoutBuilder().largura(constraint.maxWidth);
           return SingleChildScrollView(
               child: SizedBox(
             width: largura,
@@ -132,11 +124,14 @@ class LoginPageState extends State<LoginPage> {
                       children: [
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 40),
-                          child: GestureDetector(
-                            child: const Image(
-                              image: AssetImage('assets/img/google.png'),
+                          child: MouseRegion(
+                            cursor: SystemMouseCursors.click,
+                            child: GestureDetector(
+                              child: const Image(
+                                image: AssetImage('assets/img/google.png'),
+                              ),
+                              onTap: store.loginWithGoogle,
                             ),
-                            onTap: store.loginWithGoogle,
                           ),
                         ),
                         store.supportState == SupportState.supported

@@ -76,7 +76,7 @@ class _ButtonWidgetState extends State<ButtonWidget>
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 primary: Colors.deepPurple,
-                enabledMouseCursor: SystemMouseCursors.basic,
+                enabledMouseCursor: SystemMouseCursors.click,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(radius.value),
                 ),

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/modules/auth/shared/models/client_store.dart';
 import 'package:flutter_padrao/app/shared/auth/auth_controller.dart';
@@ -113,6 +114,7 @@ abstract class _LoginStoreBase with Store {
   @action
   authenticateBiometric()
   {
+
     auth.authenticateWithBiometrics(faceOrFinger).then((value) {
       if(value == 'Authorized'){
         setLoading(true);
@@ -141,13 +143,13 @@ abstract class _LoginStoreBase with Store {
 
   //storage save login e password
   @action
-  void setStorageLogin() async {
-    await storage.put('biometric', login);
+  void setStorageLogin() {
+    storage.put('biometric', login);
   }
 
   @action
-  void setStorageLoginNormal() async {
-    await storage.put('login-normal', login);
+  void setStorageLoginNormal()  {
+     storage.put('login-normal', login);
   }
 
   @action
@@ -164,19 +166,21 @@ abstract class _LoginStoreBase with Store {
   @action
   checkSupportDevice() async {
     await getStorageLogin();
-    await bio.isDeviceSupported().then((isSupported) => supportState =
-        isSupported && loginStorage!.isNotEmpty
-            ? SupportState.supported
-            : SupportState.unsupported);
-    await checkBiometrics();
-    await getAvailableBiometrics();
+    if(!kIsWeb) {
+      await bio.isDeviceSupported().then((isSupported) => supportState =
+      isSupported && loginStorage!.isNotEmpty
+          ? SupportState.supported
+          : SupportState.unsupported);
+      await checkBiometrics();
+      await getAvailableBiometrics();
+    }
   }
 
   @action
   submitStorage()
   {
     storage.get('login-normal').then((value)  {
-        if(!value.isEmpty) {
+        if(value == []) {
           auth.getEmailPasswordLogin(value[0], value[1]).then((value) {
             setLoading(false);
             setErrOrGoal(false);

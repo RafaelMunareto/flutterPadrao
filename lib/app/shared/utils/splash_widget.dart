@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_padrao/app/shared/auth/repositories/auth_repository.dart';
-import 'package:flutter_padrao/app/shared/auth/repositories/auth_repository_interface.dart';
 import 'package:flutter_padrao/app/shared/repositories/localstorage/local_storage_interface.dart';
 import 'package:flutter_padrao/app/shared/repositories/localstorage/local_storage_share.dart';
 

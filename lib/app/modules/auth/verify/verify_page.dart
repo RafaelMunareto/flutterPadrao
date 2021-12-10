@@ -7,9 +7,10 @@ import 'package:flutter_padrao/app/shared/components/background_widget.dart';
 class VerifyPage extends StatefulWidget {
   final String title;
   final String code;
+  final String mode;
 
   const VerifyPage(
-      {Key? key, this.title = 'Verificação de email', this.code = ''})
+      {Key? key, this.title = 'Verificação de email', this.code = '', this.mode=''})
       : super(key: key);
 
   @override
@@ -18,12 +19,15 @@ class VerifyPage extends StatefulWidget {
 
 class VerifyPageState extends State<VerifyPage> {
   final VerifyStore store = Modular.get();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
-    super.initState();
     store.setCode(widget.code);
+    store.setMode(widget.mode);
+    print(widget.code);
     store.emailVerify();
+    super.initState();
   }
 
   _card() {
@@ -49,6 +53,7 @@ class VerifyPageState extends State<VerifyPage> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+      key: _scaffoldKey,
       body: BackgroundWidget(
         child: LayoutBuilder(builder: (context, constraint) {
           var largura = constraint.maxWidth;

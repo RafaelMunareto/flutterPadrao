@@ -8,6 +8,7 @@ import 'package:flutter_padrao/app/shared/components/background_widget.dart';
 import 'package:flutter_padrao/app/shared/components/button_widget.dart';
 import 'package:flutter_padrao/app/shared/components/link_rote_widget.dart';
 import 'package:flutter_padrao/app/shared/components/text_field_widget.dart';
+import 'package:flutter_padrao/app/shared/utils/largura_layout_builder.dart';
 import 'package:flutter_padrao/app/shared/utils/snackbar_custom.dart';
 import 'package:mobx/mobx.dart';
 
@@ -33,8 +34,10 @@ class SignupPageState extends State<SignupPage> {
           await SnackbarCustom().createSnackBareErrOrGoal(_scaffoldKey,
               errOrGoal: store.msgErrOrGoal, message: store.msg, rota: '/auth');
           store.setMsg('');
-          Timer(const Duration(seconds: 2),
-              () => store.client.setCleanVariables());
+          if(store.msgErrOrGoal) {
+            Timer(const Duration(seconds: 2),
+                    () => store.client.setCleanVariables());
+          }
         }
       },
     );
@@ -54,18 +57,7 @@ class SignupPageState extends State<SignupPage> {
       key: _scaffoldKey,
       body: BackgroundWidget(
         child: LayoutBuilder(builder: (context, constraint) {
-          var largura = constraint.maxWidth;
-
-          if (largura < 600) {
-            largura = largura * 1;
-          } else if (largura < 768) {
-            largura = largura * 0.6;
-          } else if (largura < 1024) {
-            largura = largura * 0.4;
-          } else {
-            largura = largura * 0.2;
-          }
-
+          var largura = LarguraLayoutBuilder().largura(constraint.maxWidth);
           return SingleChildScrollView(
               child: SizedBox(
             width: largura,

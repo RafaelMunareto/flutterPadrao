@@ -70,6 +70,7 @@ abstract class _SignupStoreBase with Store {
       auth
           .createUserLinkEmail(client.name, client.email, client.password)
           .then((value) {
+
         setCheckGrupoEmail(false);
         setMsgErrOrGoal(true);
         setMsg('E-mail enviado com sucesso!');
