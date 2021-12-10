@@ -62,23 +62,82 @@ mixin _$SignupStore on _SignupStoreBase, Store {
     });
   }
 
-  final _$msgFirebaseAtom = Atom(name: '_SignupStoreBase.msgFirebase');
+  final _$msgAtom = Atom(name: '_SignupStoreBase.msg');
 
   @override
-  String get msgFirebase {
-    _$msgFirebaseAtom.reportRead();
-    return super.msgFirebase;
+  String get msg {
+    _$msgAtom.reportRead();
+    return super.msg;
   }
 
   @override
-  set msgFirebase(String value) {
-    _$msgFirebaseAtom.reportWrite(value, super.msgFirebase, () {
-      super.msgFirebase = value;
+  set msg(String value) {
+    _$msgAtom.reportWrite(value, super.msg, () {
+      super.msg = value;
+    });
+  }
+
+  final _$msgErrOrGoalAtom = Atom(name: '_SignupStoreBase.msgErrOrGoal');
+
+  @override
+  bool get msgErrOrGoal {
+    _$msgErrOrGoalAtom.reportRead();
+    return super.msgErrOrGoal;
+  }
+
+  @override
+  set msgErrOrGoal(bool value) {
+    _$msgErrOrGoalAtom.reportWrite(value, super.msgErrOrGoal, () {
+      super.msgErrOrGoal = value;
     });
   }
 
   final _$_SignupStoreBaseActionController =
       ActionController(name: '_SignupStoreBase');
+
+  @override
+  dynamic setMsgErrOrGoal(dynamic value) {
+    final _$actionInfo = _$_SignupStoreBaseActionController.startAction(
+        name: '_SignupStoreBase.setMsgErrOrGoal');
+    try {
+      return super.setMsgErrOrGoal(value);
+    } finally {
+      _$_SignupStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setLoading(dynamic value) {
+    final _$actionInfo = _$_SignupStoreBaseActionController.startAction(
+        name: '_SignupStoreBase.setLoading');
+    try {
+      return super.setLoading(value);
+    } finally {
+      _$_SignupStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setMsg(dynamic value) {
+    final _$actionInfo = _$_SignupStoreBaseActionController.startAction(
+        name: '_SignupStoreBase.setMsg');
+    try {
+      return super.setMsg(value);
+    } finally {
+      _$_SignupStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setCheckGrupoEmail(dynamic value) {
+    final _$actionInfo = _$_SignupStoreBaseActionController.startAction(
+        name: '_SignupStoreBase.setCheckGrupoEmail');
+    try {
+      return super.setCheckGrupoEmail(value);
+    } finally {
+      _$_SignupStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   dynamic changeEmailGrupo(String value) {
@@ -119,7 +178,8 @@ mixin _$SignupStore on _SignupStoreBase, Store {
 grupoEmail: ${grupoEmail},
 loading: ${loading},
 checkGrupoEmail: ${checkGrupoEmail},
-msgFirebase: ${msgFirebase},
+msg: ${msg},
+msgErrOrGoal: ${msgErrOrGoal},
 isValidRegisterEmailGrupo: ${isValidRegisterEmailGrupo}
     ''';
   }
